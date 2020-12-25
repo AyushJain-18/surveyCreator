@@ -2,7 +2,7 @@ const express           = require('express');
 const passport          = require('passport');
 const GoogleStrategy    = require('passport-google-oauth20').Strategy;  
 
-const keys = require('./config/secretKeys')
+const keys = require('./server/config/secretKeys')
 
 const app = express();
 
