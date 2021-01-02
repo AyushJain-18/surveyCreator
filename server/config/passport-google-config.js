@@ -7,8 +7,10 @@ const UserController    = require('../controller/user.controller')
 passport.use(new GoogleStrategy(
     {   clientID     : process.env.google_client_id,
         clientSecret : process.env.google_client_secret,
-        callbackURL  : '/auth/google/callback'
+        callbackURL  : '/auth/google/callback',
+        proxy        : true
     },async (accessToken, refreshToken, profile, done) => {
+        console.log('profile is ', profile);
         let user = await UserController.isUserExist('profile_id', profile.id)
         if(user){
             done(null, user) // this user object we gona get while we are using seriaize user
