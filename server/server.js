@@ -6,8 +6,8 @@ const passport      = require('passport');
 const CookieSession = require('cookie-session')
 
 // variables 
-const app           = express();
-const connectTODB   = require('./config/db.setup');
+const app          = express();
+const connectTODB  = require('./config/db.setup');
 
 // routes
 const testingRoutes = require('./routes/testting.routes') 
