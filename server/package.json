@@ -4,8 +4,11 @@
   "description": "an express application to create surveys ",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "concurrently \"npm run client\"  \"npm run server\"",
+    "start-dev": "concurrently \"npm run client\"  \"npm run server-dev\"",
+    "server-dev": "nodemon server.js",
+    "server": "node server.js",
+    "client": "npm start --prefix client"
   },
   "author": "Ayush jain",
   "license": "ISC",
@@ -15,6 +18,8 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "concurrent": "^0.3.2",
+    "concurrently": "^5.3.0",
     "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
