@@ -1,25 +1,47 @@
-const express           = require('express');
-const passport          = require('passport');
-const GoogleStrategy    = require('passport-google-oauth20').Strategy;  
+require('dotenv').config();
 
-const keys = require('./server/config/secretKeys')
+// packages 
+const express       = require('express');
+const passport      = require('passport');
+const CookieSession = require('cookie-session')
 
-const app = express();
+// variables 
+const app           = express();
+const connectTODB   = require('./config/db.setup');
 
-passport.use(new GoogleStrategy(
-        {   clientID     : keys.google_client_id,
-            clientSecret : keys.google_client_secret,
-            callbackURL  : '/auth/google/callback'
-        }, (accessToken, refreshToken, profile, cb) => {
+// routes
+const testingRoutes = require('./routes/testting.routes') 
 
-            console.log('accessToken',  accessToken);
-            console.log('refreshToken', refreshToken);
-            console.log('profile',      profile);
-        } 
-    ));
+connectTODB();
 
-app.get('/auth/google', passport.authenticate('google' ,{scope: ['email', 'profile']}))
-app.get('/auth/google/callback', passport.authenticate('google'));
+// cookies configuration
+
+app.use(CookieSession({
+        maxAge: 30*24*60*60*1000,
+        keys:[process.env.Cookie_Session_Key]
+    }
+))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// google auth configuration and routes
+require('./config/passport-google-config');
+require('./routes/google-auth-routes')(app);
+
+
+// app.use(function (req, res, next) {
+//     // Update views
+//     req.session.views = (req.session.views || 0) + 1
+   
+//     // Write response
+//     res.end(req.session.views + ' views');
+//     next();
+//   })
+   
+
+
+app.use('/', testingRoutes);
 
 const PORT  = process.env.PORT || 5000 ;
 app.listen(PORT, ()=> console.log('server is created on port', PORT))
