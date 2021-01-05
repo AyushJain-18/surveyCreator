@@ -8,4 +8,4 @@ export const selectLogedInUserData    = createSelector([selectAuth], auth=> auth
 
 export const selectIsUserAuthError    = createSelector([selectAuth], auth=> auth.isAuthError);
 
-export const selectIsFetchingUserAuth = createSelector([selectAuth], auth=> auth.isFetchingUserLoginDetails);
+export const selectIsFetchingUserAuth = createSelector([selectAuth], auth=> auth.isLoading);

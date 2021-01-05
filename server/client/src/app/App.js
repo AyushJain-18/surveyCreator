@@ -1,22 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import HeaderCompoennt from '../components/header/Header.component'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="/auth/google"
-        >
-          Google Sign in 
-        </a>
-      </header>
-    </div>
+      <HeaderCompoennt/>
   );
 }
 
