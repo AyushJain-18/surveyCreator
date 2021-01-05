@@ -10,9 +10,9 @@ let isUserExist = async(keyName, value) =>{
     }
 
 }
-let cretaeNewUser = async (keyName, value)=>{
+let cretaeNewUser = async (userData)=>{
     try{
-        let user = await User.create({[keyName]: value});
+        let user = await User.create({...userData});
         console.log('User created', user);
         return user;
     }catch(error){

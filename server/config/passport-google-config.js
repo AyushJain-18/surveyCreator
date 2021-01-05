@@ -10,12 +10,17 @@ passport.use(new GoogleStrategy(
         callbackURL  : '/auth/google/callback',
         proxy        : true
     },async (accessToken, refreshToken, profile, done) => {
-        console.log('profile is ', profile);
         let user = await UserController.isUserExist('profile_id', profile.id)
         if(user){
             done(null, user) // this user object we gona get while we are using seriaize user
         }else{
-            let user = await UserController.cretaeNewUser('profile_id', profile.id)
+            let userData = {
+                profile_id      : profile.id,
+                display_name    : profile._json.name,
+                email_id        : profile._json.email,
+                profile_picture : profile._json.picture
+            }
+            let user = await UserController.cretaeNewUser(userData)
             done(null, user) // this user object we gona get while we are using seriaize user
         }
     } 
