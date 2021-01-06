@@ -69,7 +69,7 @@ const UserPersona =({userData, history}) =>{
 
     const onLogOut = (event) =>{
         handleClose(event);
-        history.push('/api/logout');
+        window.open('/api/logout',"_self");
     }
 
     return(

@@ -1,4 +1,5 @@
-import errorLogger from '../../utils/error.logger'
+import errorLogger from '../../utils/error.logger';
+import SERVER_URL from '../../utils/server';
 import authTypes from './auth.actiontypes';
 import axios from 'axios';
 
@@ -18,7 +19,7 @@ export const errorInFetchingUserLoginDetails =() =>({
 
 // user login actions
 export const startUserLogIn  =() =>({
-    type:  authTypes.SUCCESS_USER_LOGIN
+    type:  authTypes.START_USER_LOGIN
 })
 
 export const userLogInSuccess  =(userData) =>({
@@ -50,7 +51,7 @@ export const startFetchingUserLoginDetailsAsync = ()=>{
     return async (dispatch) => {
         dispatch(startFetchingUserLoginDetails());
         try{
-            let response = await axios.get('api/getCurrentUser');
+            let response = await axios.get(`/api/getCurrentUser`);
             dispatch(successfullyFetchedUserLoginDetails(response.data))
         } catch(error){
             errorLogger(error, 'Error occored while fetching user login details');
@@ -58,3 +59,17 @@ export const startFetchingUserLoginDetailsAsync = ()=>{
         }
     }
 }
+
+export const startLoginWithGoogle = ()=>{
+    return async (dispatch) => {
+        dispatch(startUserLogIn());
+        try{
+            let response = await axios.get('/auth/google');
+            console.log('Response is', response);
+        } catch(error){
+            errorLogger(error, 'Error occored while logging with google');
+            dispatch(userLogInFailure())
+        }
+    }
+}
+
