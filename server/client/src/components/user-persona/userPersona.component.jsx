@@ -8,6 +8,7 @@ import {
     Paper, 
     MenuItem, 
     MenuList,
+    Typography,
     ClickAwayListener
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,13 +17,39 @@ import {withRouter} from 'react-router-dom';
 // import {connect} from 'react-redux';
 import {compose} from 'redux';
 
+// icons
+import AttachMoneySharpIcon from '@material-ui/icons/AttachMoneySharp';
+import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
+import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp';
+import CloseSharpIcon from '@material-ui/icons/CloseSharp';
+
+import StripeCheckoutComponent from '../stripe-checkout/Stripe-checkout.component';
+
+
+
 
 const usePersonaStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '50%',
       '& > *': {
         margin: theme.spacing(1),
       },
+    },
+    credit:{
+      display: 'flex',
+      fontWeight: 'bold',
+      height: 'inherit',
+      alignItems: 'center', 
+      visibility: 'hidden',
+      [theme.breakpoints.up('md')]: {
+        visibility: 'visible'
+      }
+    },
+    icon:{
+      marginRight: theme.spacing(1)
     },
     small: {
       width: theme.spacing(3),
@@ -41,6 +68,7 @@ const UserPersona =({userData, history}) =>{
 
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+    const stripeRef = React.useRef(null);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -72,8 +100,13 @@ const UserPersona =({userData, history}) =>{
         window.open('/api/logout',"_self");
     }
 
+    const onCompleteStripePayement =() => handleToggle(stripeRef.current); 
+
     return(
         <div className={classes.root}>
+          <div className={classes.credit}><Typography variant="h6" >Your total Credit are</Typography> 
+            <AttachMoneySharpIcon/>  <Typography variant="h6" >0</Typography>
+          </div>
             <Avatar title={display_name} alt ={display_name} src={profile_picture} 
                     className={classes.large} 
                     ref={anchorRef}
@@ -93,8 +126,10 @@ const UserPersona =({userData, history}) =>{
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={onLogOut}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}> <AccountCircleSharpIcon className={classes.icon}/>      Profile                 </MenuItem>
+                    <MenuItem ref={stripeRef}>       <AddCircleOutlineSharpIcon className={classes.icon}/>   <StripeCheckoutComponent onClose={onCompleteStripePayement}> Add Credit</StripeCheckoutComponent> </MenuItem>
+                    <MenuItem onClick={handleClose}> <AttachMoneySharpIcon className={classes.icon}/>        You have 0 Credits      </MenuItem>
+                    <MenuItem onClick={onLogOut}>    <CloseSharpIcon className={classes.icon}/>              Logout                  </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -102,7 +137,7 @@ const UserPersona =({userData, history}) =>{
           )}
         </Popper>
          </div>
-    ) 
+    )
 }
 
 export default compose(
