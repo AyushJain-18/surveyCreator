@@ -5,7 +5,7 @@ const URL = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@${proce
 
 let connectToDB = async()=>{
     try{
-        await mongoose.connect(URL ,{ useNewUrlParser: true,useUnifiedTopology: true });
+        await mongoose.connect(URL ,{ useNewUrlParser: true,useUnifiedTopology: true , useFindAndModify: false });
         console.log('//SUCCESS// \n Successfully connected to DB');
     }catch(error){
         console.log('//ERROR// \n error ocured while connecting to DB');

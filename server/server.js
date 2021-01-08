@@ -3,6 +3,8 @@ require('dotenv').config();
 // packages 
 const express       = require('express');
 const passport      = require('passport');
+const morgan        = require('morgan');
+const cors          = require('cors')
 const CookieSession = require('cookie-session')
 
 // variables 
@@ -10,12 +12,24 @@ const app          = express();
 const connectTODB  = require('./config/db.setup');
 
 // routes
-const testingRoutes = require('./routes/testting.routes') 
+const getUserDetails = require('./routes/getUser.routes');
+const addMoreCredits = require('./routes/credits.routes');
 
 connectTODB();
 
-// cookies configuration
+var corsOptions = {
+    origin: process.env.CLIENT_APP_ROUTES,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
+// morgan 
+app.use(morgan('combined'));
+// Cors
+app.use(cors(corsOptions));
+// josn body
+app.use(express.json());
+
+// cookies configuration
 app.use(CookieSession({
         maxAge: 30*24*60*60*1000,
         keys:[process.env.Cookie_Session_Key]
@@ -30,18 +44,9 @@ require('./config/passport-google-config');
 require('./routes/google-auth-routes')(app);
 
 
-// app.use(function (req, res, next) {
-//     // Update views
-//     req.session.views = (req.session.views || 0) + 1
-   
-//     // Write response
-//     res.end(req.session.views + ' views');
-//     next();
-//   })
-   
-
-
-app.use('/', testingRoutes);
+// ------------------------------------ Routes ------------------------------------
+app.use('/', getUserDetails);
+app.use('/', addMoreCredits);
 
 const PORT  = process.env.PORT || 5000 ;
 app.listen(PORT, ()=> console.log('server is created on port', PORT))

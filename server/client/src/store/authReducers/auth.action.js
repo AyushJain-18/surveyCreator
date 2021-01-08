@@ -1,4 +1,4 @@
-import errorLogger from '../../utils/error.logger';
+import errorLogger, {ERROR_AUTH_MESSAGE} from '../../utils/error.logger';
 import SERVER_URL from '../../utils/server';
 import authTypes from './auth.actiontypes';
 import axios from 'axios';
@@ -45,6 +45,20 @@ export const userLogoutFailure  =() =>({
 })
 
 
+// USER Credit operation 
+
+export const startAddingCredit  =() =>({
+    type:  authTypes.SUCCESS_USER_LOGOUT
+})
+
+export const SuccessAddingCredit =() =>({
+    type        :  authTypes.SUCCESS_USER_LOGOUT,
+})
+
+export const errorAddingCredit  =() =>({
+    type:  authTypes.ERROR_USER_LOGOUT
+})
+
 // --------------Assonchronous action creator ------------- //
 
 export const startFetchingUserLoginDetailsAsync = ()=>{
@@ -54,10 +68,30 @@ export const startFetchingUserLoginDetailsAsync = ()=>{
             let response = await axios.get(`/api/getCurrentUser`);
             dispatch(successfullyFetchedUserLoginDetails(response.data))
         } catch(error){
+                if(error.message === ERROR_AUTH_MESSAGE){
+                    dispatch(successfullyFetchedUserLoginDetails(null));
+                    return;
+                }
             errorLogger(error, 'Error occored while fetching user login details');
             dispatch(errorInFetchingUserLoginDetails())
         }
     }
+}
+
+export const startAddingCreditsAsync =(token, amount)=>{
+    return async dispatch => {
+        dispatch(startAddingCredit);
+        try{
+            let response = await axios.post('/api/addCredit',{token, amount: amount }); 
+            console.log('Add Credit Response is', response);
+            startFetchingUserLoginDetailsAsync();
+        } catch(error){
+            errorLogger(error, 'Error occored while Adding new Credits');
+            dispatch(errorAddingCredit())
+        }
+    
+    } 
+
 }
 
 export const startLoginWithGoogle = ()=>{
@@ -65,11 +99,15 @@ export const startLoginWithGoogle = ()=>{
         dispatch(startUserLogIn());
         try{
             let response = await axios.get('/auth/google');
-            console.log('Response is', response);
+            console.log('Login response is',response);
         } catch(error){
             errorLogger(error, 'Error occored while logging with google');
             dispatch(userLogInFailure())
         }
     }
 }
+
+
+
+
 

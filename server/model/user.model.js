@@ -15,6 +15,14 @@ let UserSchema = new mongoose.Schema({
     },
     profile_picture: {
         type: String
+    },
+    credit:{
+        type: Number,
+        default: 0
+    },
+    stripe_customer_id:{
+        type: String,
+        default: null
     }
 },{
     timestamps: true

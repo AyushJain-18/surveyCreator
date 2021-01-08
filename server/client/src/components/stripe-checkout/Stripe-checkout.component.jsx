@@ -1,8 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import StripeCheckout from 'react-stripe-checkout';
 
-const StripeCheckoutComponent =({children, onClose})=>{
+import {startAddingCreditsAsync} from '../../store/authReducers/auth.action';
+
+const StripeCheckoutComponent =({children, onClose, startAddingCredit})=>{
    return(
     <StripeCheckout
             amount={500}
@@ -11,7 +14,7 @@ const StripeCheckoutComponent =({children, onClose})=>{
             image = '/favicon.ico'
             // billingAddress
             // shippingAddress
-            token={token => console.log(token)}
+            token={token => startAddingCredit(token, 500)}
             stripeKey={process.env.REACT_APP_PUBLISHABLE_KEY }
             //opened={onOpen}
             closed={onClose}
@@ -19,5 +22,5 @@ const StripeCheckoutComponent =({children, onClose})=>{
     </StripeCheckout>
    ) 
 }
-
-export default StripeCheckoutComponent;
+const mapDispatchStateToProps = dispatch => ({startAddingCredit : (token,amount)=> dispatch(startAddingCreditsAsync(token, amount))});
+export default connect(null, mapDispatchStateToProps)(StripeCheckoutComponent);
