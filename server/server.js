@@ -14,6 +14,7 @@ const connectTODB  = require('./config/db.setup');
 // routes
 const getUserDetails = require('./routes/getUser.routes');
 const addMoreCredits = require('./routes/credits.routes');
+const logoutRoute    = require('./routes/logout.routes') 
 
 connectTODB();
 
@@ -47,6 +48,7 @@ require('./routes/google-auth-routes')(app);
 // ------------------------------------ Routes ------------------------------------
 app.use('/', getUserDetails);
 app.use('/', addMoreCredits);
+app.use('/', logoutRoute);
 
 const PORT  = process.env.PORT || 5000 ;
 app.listen(PORT, ()=> console.log('server is created on port', PORT))

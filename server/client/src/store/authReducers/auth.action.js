@@ -94,15 +94,16 @@ export const startAddingCreditsAsync =(token, amount)=>{
 
 }
 
-export const startLoginWithGoogle = ()=>{
+export const startUserLogoutAsync = ()=>{
     return async (dispatch) => {
-        dispatch(startUserLogIn());
+        dispatch(startUserLogout());
         try{
             let response = await axios.get('/auth/google');
             console.log('Login response is',response);
+            dispatch(userLogoutSuccess());
         } catch(error){
             errorLogger(error, 'Error occored while logging with google');
-            dispatch(userLogInFailure())
+            dispatch(userLogoutFailure())
         }
     }
 }

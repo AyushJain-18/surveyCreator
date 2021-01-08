@@ -1,5 +1,6 @@
 const passport = require('passport');
 
+
 module.exports = (app) =>{
     app.get('/auth/google', 
             passport.authenticate('google' ,{scope: ['email', 'profile']})
@@ -10,11 +11,6 @@ module.exports = (app) =>{
                     res.redirect(`${process.env.CLIENT_APP_ROUTES}/surveys`);
                 }
             );
-
-    app.get('/api/logout', (req, res)=>{
-        req.logout();
-        res.redirect(`${process.env.CLIENT_APP_ROUTES}/`);
-    })
 }
 
 

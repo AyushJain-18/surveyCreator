@@ -25,7 +25,8 @@ import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
 import StripeCheckoutComponent from '../stripe-checkout/Stripe-checkout.component';
-import {selectUserCredits} from '../../store/authReducers/auth.selector'
+import {selectUserCredits} from '../../store/authReducers/auth.selector';
+import {startUserLogoutAsync} from '../../store/authReducers/auth.action'
 
 
 
@@ -142,7 +143,8 @@ const UserPersona =({userData, history, userCredit}) =>{
     )
 }
 const mapStateToProps = state =>({userCredit :selectUserCredits(state) })
+const mapDispatchToProps = dispatch => ({startUserLogout: ()=>dispatch(startUserLogoutAsync())})
 export default compose(
     withRouter,
-    connect(mapStateToProps)
+    connect(mapStateToProps, mapDispatchToProps)
 )(UserPersona);
