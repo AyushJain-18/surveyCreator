@@ -1,5 +1,6 @@
 
 import React from 'react';
+import {connect} from 'react-redux';
 
 import {
     Avatar, 
@@ -24,6 +25,7 @@ import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
 import StripeCheckoutComponent from '../stripe-checkout/Stripe-checkout.component';
+import {selectUserCredits} from '../../store/authReducers/auth.selector'
 
 
 
@@ -62,7 +64,7 @@ const usePersonaStyles = makeStyles((theme) => ({
     },
   }));
 
-const UserPersona =({userData, history}) =>{
+const UserPersona =({userData, history, userCredit}) =>{
     const classes = usePersonaStyles();
     const {display_name, profile_picture } = userData; //,email_id
 
@@ -105,7 +107,7 @@ const UserPersona =({userData, history}) =>{
     return(
         <div className={classes.root}>
           <div className={classes.credit}><Typography variant="h6" >Your total Credit are</Typography> 
-            <AttachMoneySharpIcon/>  <Typography variant="h6" >0</Typography>
+            <AttachMoneySharpIcon/>  <Typography variant="h6" >{userCredit}</Typography>
           </div>
             <Avatar title={display_name} alt ={display_name} src={profile_picture} 
                     className={classes.large} 
@@ -128,7 +130,7 @@ const UserPersona =({userData, history}) =>{
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <MenuItem onClick={handleClose}> <AccountCircleSharpIcon className={classes.icon}/>      Profile                 </MenuItem>
                     <MenuItem ref={stripeRef}>       <AddCircleOutlineSharpIcon className={classes.icon}/>   <StripeCheckoutComponent onClose={onCompleteStripePayement}> Add Credit</StripeCheckoutComponent> </MenuItem>
-                    <MenuItem onClick={handleClose}> <AttachMoneySharpIcon className={classes.icon}/>        You have 0 Credits      </MenuItem>
+                    <MenuItem onClick={handleClose}> <AttachMoneySharpIcon className={classes.icon}/>        You have {userCredit} Credits      </MenuItem>
                     <MenuItem onClick={onLogOut}>    <CloseSharpIcon className={classes.icon}/>              Logout                  </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -139,7 +141,8 @@ const UserPersona =({userData, history}) =>{
          </div>
     )
 }
-
+const mapStateToProps = state =>({userCredit :selectUserCredits(state) })
 export default compose(
-    withRouter
+    withRouter,
+    connect(mapStateToProps)
 )(UserPersona);

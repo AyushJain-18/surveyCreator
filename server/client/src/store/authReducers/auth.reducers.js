@@ -9,6 +9,7 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
         case authTypes.START_USER_LOGIN :
         case authTypes.START_USER_LOGOUT:
         case authTypes.START_FETCHING_USER_LOGIN_DETAILS:
+        case authTypes.START_ADDING_CREDIT:
             return{
                 ...state,
                 isLoading: true,
@@ -17,6 +18,7 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
         case authTypes.ERROR_USER_LOGIN :
         case authTypes.ERROR_USER_LOGOUT:
         case authTypes.ERROR_FETCHING_USER_LOGIN_DETAILS:
+        case authTypes.ERROR_ADDING_CREDIT:
             return{
                 ...state,
                 isAuthError: true,
@@ -24,6 +26,7 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
             }
             case authTypes.SUCCESS_FETCHING_USER_LOGIN_DETAILS :
             case authTypes.SUCCESS_USER_LOGIN:
+            case authTypes.SUCCESS_ADDING_CREDIT:
                 return{
                     ...state,
                     isLoading: false,

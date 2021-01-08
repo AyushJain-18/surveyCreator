@@ -48,15 +48,15 @@ export const userLogoutFailure  =() =>({
 // USER Credit operation 
 
 export const startAddingCredit  =() =>({
-    type:  authTypes.SUCCESS_USER_LOGOUT
+    type:  authTypes.START_ADDING_CREDIT
 })
 
 export const SuccessAddingCredit =() =>({
-    type        :  authTypes.SUCCESS_USER_LOGOUT,
+    type        :  authTypes.SUCCESS_ADDING_CREDIT,
 })
 
 export const errorAddingCredit  =() =>({
-    type:  authTypes.ERROR_USER_LOGOUT
+    type:  authTypes.ERROR_ADDING_CREDIT
 })
 
 // --------------Assonchronous action creator ------------- //
@@ -80,11 +80,11 @@ export const startFetchingUserLoginDetailsAsync = ()=>{
 
 export const startAddingCreditsAsync =(token, amount)=>{
     return async dispatch => {
-        dispatch(startAddingCredit);
+        dispatch(startAddingCredit());
         try{
             let response = await axios.post('/api/addCredit',{token, amount: amount }); 
             console.log('Add Credit Response is', response);
-            startFetchingUserLoginDetailsAsync();
+            dispatch(startFetchingUserLoginDetailsAsync());
         } catch(error){
             errorLogger(error, 'Error occored while Adding new Credits');
             dispatch(errorAddingCredit())
