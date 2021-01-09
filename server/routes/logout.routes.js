@@ -4,11 +4,10 @@ const Routes  = express.Router();
 
 Routes.get('/api/logout', (req, res)=>{
     req.logout();
-    if(process.env.NODE_ENV ==="development"){
-        return res.redirect(process.env.CLIENT_APP_ROUTES);
-        
+    if(process.env.NODE_ENV==='production'){
+        return res.redirect('/')    
     }
-    res.redirect('/')
+    return res.redirect(process.env.CLIENT_APP_ROUTES);    
 })
 
 module.exports = Routes;

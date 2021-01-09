@@ -2,7 +2,7 @@ import {createSelector} from  'reselect';
 
 export const selectAuth = state => state.auth;
 
-export const selectIsUserLogedIn      = createSelector([selectAuth], auth => !!auth.userDetails);
+export const selectIsUserLogedIn      = createSelector([selectAuth], auth => !!(auth.userDetails && auth.userDetails.display_name));
 
 export const selectUserCredits       = createSelector([selectAuth], auth => auth.userDetails.credit);
 

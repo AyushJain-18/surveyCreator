@@ -2,7 +2,7 @@ import authTypes from './auth.actiontypes'
 const INITIAL_AUTH_STATE = {
     isAuthError   : false,
     isLoading     : false,
-    userDetasls   : null 
+    userDetails   : null 
 }
 const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
     switch(action.type){

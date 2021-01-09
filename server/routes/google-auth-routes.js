@@ -6,13 +6,10 @@ module.exports = (app) =>{
             passport.authenticate('google' ,{scope: ['email', 'profile']})
           );
     app.get('/auth/google/callback', 
-                passport.authenticate('google', {failureRedirect:'/error'}),
-                (req, res) =>{
-                    if(process.env.NODE_ENV ==="development"){
-                        return res.redirect(`${process.env.CLIENT_APP_ROUTES}/surveys`)
-                    }
-                   return res.redirect(`/surveys`);
-                }
+                passport.authenticate('google', {
+                    failureRedirect:'/error', 
+                    successRedirect:process.env.NODE_ENV==='production'?`/surveys`: `${process.env.CLIENT_APP_ROUTES}/surveys`
+                 }),
             );
 }
 
