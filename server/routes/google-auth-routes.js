@@ -8,8 +8,10 @@ module.exports = (app) =>{
     app.get('/auth/google/callback', 
                 passport.authenticate('google', {failureRedirect:'/error'}),
                 (req, res) =>{
-                    console.log('process.env.CLIENT_APP_ROUTES', process.env.CLIENT_APP_ROUTES)
-                    res.redirect(`${process.env.CLIENT_APP_ROUTES}/surveys`);
+                    if(process.env.NODE_ENV ==="development"){
+                        return res.redirect(`${process.env.CLIENT_APP_ROUTES}/surveys`)
+                    }
+                   return res.redirect(`/surveys`);
                 }
             );
 }
