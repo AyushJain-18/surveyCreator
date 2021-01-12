@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 a{
   text-decoration: none;
   color: inherit;
@@ -11,4 +11,5 @@ a{
 */
 *{
   box-sizing: border-box;
+  font-family: 'Yusei Magic', sans-serif;
   }

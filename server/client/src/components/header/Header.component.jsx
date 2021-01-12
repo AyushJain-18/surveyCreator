@@ -65,8 +65,12 @@ const useStyles = theme => ({
     root: {
          flexGrow: 1,
     },
+    appbar:{
+      minHeight: '72px'
+    },
     menuButton: {
             marginRight: theme.spacing(2),
+            
     },
     title: {
             flexGrow: 1,
@@ -101,7 +105,7 @@ class HeaderCompoennt extends React.Component {
       
         return (
           <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar className={classes.appbar} position="static">
               <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" 
                             aria-label="menu" onClick={this.toggleDrawer(true)} >

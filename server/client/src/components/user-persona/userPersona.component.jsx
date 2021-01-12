@@ -26,7 +26,9 @@ import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
 import StripeCheckoutComponent from '../stripe-checkout/Stripe-checkout.component';
 import {selectUserCredits} from '../../store/authReducers/auth.selector';
-import {startUserLogoutAsync} from '../../store/authReducers/auth.action'
+import {startUserLogoutAsync} from '../../store/authReducers/auth.action';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 
@@ -50,6 +52,9 @@ const usePersonaStyles = makeStyles((theme) => ({
       [theme.breakpoints.up('md')]: {
         visibility: 'visible'
       }
+    },
+    avatar: {
+      display: 'flex'
     },
     icon:{
       marginRight: theme.spacing(1)
@@ -110,16 +115,23 @@ const UserPersona =({userData, history, userCredit}) =>{
           <div className={classes.credit}><Typography variant="h6" >Your total Credit are</Typography> 
             <AttachMoneySharpIcon/>  <Typography variant="h6" >{userCredit}</Typography>
           </div>
-            <Avatar title={display_name} alt ={display_name} src={profile_picture} 
+          <div className={classes.avatar}>
+          <Avatar title={display_name} alt ={display_name} src={profile_picture} 
                     className={classes.large} 
                     ref={anchorRef}
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={handleToggle}
             />
+             <IconButton color="inherit"  aria-label="menu"  onClick={handleToggle} >
+                <ExpandMoreIcon/>
+            </IconButton>
+          </div>
+         
             <Popper open={open} 
                     role='menu'
                     anchorEl={anchorRef.current} 
+                    style={{zIndex: 100}}
                     transition 
                     disablePortal>
           {({ TransitionProps, placement }) => (

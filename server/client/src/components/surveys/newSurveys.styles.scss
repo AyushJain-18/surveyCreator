@@ -1,0 +1,23 @@
+.survey-container{
+    background-color    : rgba(226, 226, 226, 0.8);
+    width           : auto;
+    height          : 89vh;
+    display         : flex;
+    flex-direction  : column;
+}
+
+.survey-display-container{
+    min-height: 70vh;
+}
+
+.add-new-survey-iocn{
+    align-self: flex-end;
+    padding-right: 100px;
+    &:hover{
+        filter: brightness(1.1);
+        cursor: pointer;
+    }
+    &:active{
+        transform: scale(0.95);
+    }
+}

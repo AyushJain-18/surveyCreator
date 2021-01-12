@@ -1,0 +1,81 @@
+.new-form-error-container{
+    display         : flex;
+    flex-direction  : column;
+    justify-content : flex-start;
+    align-items     : center;
+    font-family     : 'Yusei Magic', sans-serif;
+    color           : #ff0059;
+    font-weight     : bold ;
+    background-color: rgba(226, 226, 226, 0.8);
+    height          : 80vh ;
+    padding-top     : 60px ;
+}
+.add-credit-form{
+        font-size   :  3rem;
+        color       :  blue;
+        padding     :   40px;
+        &:hover{
+            color: rgb(252, 133, 133);
+            cursor: pointer;
+        }
+        &:active{
+            transform: scale(0.95);
+        }
+}
+
+.add-new-survey-form-container{
+    display             : flex;
+    flex-direction      : column;
+    justify-content     : center;
+    align-items         : center;
+
+    .form-container{
+        width           : 70vw;
+        border          : 1px solid black;
+        box-shadow      : 10px 10px 10px black  ;
+        border-radius   : 10px;
+        background-color: rgba(226, 226, 226, 0.8);
+         ;
+        .form-header{
+            align-self      : center;
+            font-family     : 'Yusei Magic', sans-serif;
+            font-weight     : bold ;
+            font-size       : 3rem  ;
+            display         : flex;
+            justify-content : center;
+            padding         : 20px 20px 0px ;
+
+            @media screen and (max-width: 900px) {
+                font-size       : 1.5rem  ;
+            }
+        }
+        .submit-button-container{
+            display         : flex;
+            justify-content : center;
+            align-items     : flex-end;
+            padding         : 10px 50px;
+            margin          : 10px 0px ;
+            .button{
+                background-color    : cornflowerblue;
+                color               : black;
+                font-family         : 'Yusei Magic', sans-serif;
+                font-size           : 1.5rem ;
+                padding             : 15px 20px;
+                border-radius       : 5px ;
+                box-shadow          : 2px 2px 2px;
+                &:hover{
+                    filter: brightness(1.1);
+                    cursor: pointer;
+                }
+                &:focus{
+                    outline: none;
+                }
+                &:active{
+                    transform: scale(0.95);
+                }  
+            }
+        }
+    }
+   
+    
+}

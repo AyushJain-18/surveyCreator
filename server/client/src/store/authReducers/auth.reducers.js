@@ -2,6 +2,7 @@ import authTypes from './auth.actiontypes'
 const INITIAL_AUTH_STATE = {
     isAuthError   : false,
     isLoading     : false,
+    formData      : null, 
     userDetails   : null 
 }
 const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
@@ -33,12 +34,22 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
                     isAuthError: false,
                     userDetails: action.payload
                 }
-                case authTypes.SUCCESS_USER_LOGOUT :
+            case authTypes.SUCCESS_USER_LOGOUT :
+            return{
+                ...state,
+                isLoading: false,
+                isAuthError: false,
+                userDetails: null
+            }
+            case authTypes.ADD_SURVEY_FORM_DATA :
                 return{
                     ...state,
-                    isLoading: false,
-                    isAuthError: false,
-                    userDetails: null
+                    formData: action.payload
+                }
+            case authTypes.CLEAR_SURVEY_FORM_DATA :
+                return{
+                    ...state,
+                    formData: null
                 }
         default: return state
     }

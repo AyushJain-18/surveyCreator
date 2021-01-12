@@ -10,7 +10,7 @@ const CookieSession = require('cookie-session')
 
 // variables 
 const app          = express();
-const connectTODB  = require('./config/db.setup');
+const connectTODB  = require('./services/db.setup');
 
 // routes
 const getUserDetails = require('./routes/getUser.routes');
@@ -42,7 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // google auth configuration and routes
-require('./config/passport-google-config');
+require('./services/passport-google-config');
 require('./routes/google-auth-routes')(app);
 
 

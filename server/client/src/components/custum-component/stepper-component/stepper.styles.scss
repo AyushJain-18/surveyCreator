@@ -1,0 +1,29 @@
+.form-button-container{
+    display         : flex;
+    justify-content : space-between;
+    align-items     : flex-end;
+    padding         : 10px 50px;
+    margin          : 20px 40px ;
+    @media screen and (max-width: 1100px) {
+        margin          : 0px 0px ;
+    }
+    .stepper-button{
+        background-color    : rgb(255, 164, 164);
+        color               : black;
+        font-family         : 'Yusei Magic', sans-serif;
+        font-size           : 1.5rem ;
+        padding             : 15px 20px;
+        border-radius       : 5px ;
+        box-shadow          : 2px 2px 2px;
+        &:hover{
+            filter: brightness(1.1);
+            cursor: pointer;
+        }
+        &:focus{
+            outline: none;
+        }
+        &:active{
+            transform: scale(0.95);
+        }  
+    }
+}

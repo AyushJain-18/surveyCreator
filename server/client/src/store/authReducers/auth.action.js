@@ -58,7 +58,18 @@ export const SuccessAddingCredit =() =>({
 export const errorAddingCredit  =() =>({
     type:  authTypes.ERROR_ADDING_CREDIT
 })
+// ---------Survey form data actions------------------//
 
+export const addSurveyFormDataToReducer  =(formData) =>{
+    console.log('formData', formData);
+    return {
+        type    :  authTypes.ADD_SURVEY_FORM_DATA,
+        payload :  formData
+    }
+}
+export const clearSurveyFormDataFromReducer  =() =>({
+    type:  authTypes.CLEAR_SURVEY_FORM_DATA
+})
 // --------------Assonchronous action creator ------------- //
 
 export const startFetchingUserLoginDetailsAsync = ()=>{

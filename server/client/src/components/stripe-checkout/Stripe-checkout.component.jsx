@@ -17,7 +17,7 @@ const StripeCheckoutComponent =({children, onClose, startAddingCredit})=>{
             token={token => startAddingCredit(token, 500)}
             stripeKey={process.env.REACT_APP_PUBLISHABLE_KEY }
             //opened={onOpen}
-            closed={onClose}
+            closed={onClose? onClose: ''}
     >{children} 
     </StripeCheckout>
    ) 

@@ -8,7 +8,7 @@ module.exports = (app) =>{
     app.get('/auth/google/callback', 
                 passport.authenticate('google', {
                     failureRedirect:'/error', 
-                    successRedirect:process.env.NODE_ENV==='production'?`/surveys`: `${process.env.CLIENT_APP_ROUTES}/surveys`
+                    successRedirect:process.env.NODE_ENV==='production'?`/`: `${process.env.CLIENT_APP_ROUTES}/`
                  }),
             );
 }
