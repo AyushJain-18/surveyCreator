@@ -8,20 +8,20 @@ const transporter = nodemailer.createTransport({
     tls: { rejectUnauthorized: false }
    });
 
-const Survey_Recivers = [
-    {
-        mail:'Ayush.ayushjain12@gmail.com'
-    }, 
-    {   mail:'ishu11jain@gmail.com'
-    }
-];
+// const Survey_Recivers = [
+//     {
+//         mail:'Ayush.ayushjain12@gmail.com'
+//     }, 
+//     {   mail:'ishu11jain@gmail.com'
+//     }
+// ];
 
-const generateMailOptions =(reciverObj, senderObj) => {
+const generateMailOptions =(reciverObj, senderObj,body,subject) => {
     return{
         messageId: reciverObj.mail,
         from: `SURVEY GENERATOR <${senderObj.mail}>`, // sender address
         to:   reciverObj.mail, // list of receivers
-        subject: 'Please respond to this survey', // Subject line
+        subject: subject, // Subject line
         html: `
         <!DOCTYPE html>
             <html lang="en">
@@ -29,18 +29,18 @@ const generateMailOptions =(reciverObj, senderObj) => {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Document</title>
-                <style>
-            
-                </style>
             </head>
             <body style="background-color: rgb(32, 32, 32);">
                     <div style='text-align: center; margin: 100px 20px;'>
                         <h1 style="color: coral; font-weight: bold; font-size: 4rem;">           Please fill out the survey</h1>
+                        <h3 style="color: cadetblue; font-weight: bold; font-size: 2.5rem;" >
+                            ${body}
+                        </h3> 
                         <h3 style="color: cadetblue; font-weight: bold; font-size: 2.5rem;" >      Do you like our survey creator?</h3>
-                    </div>
+                        </div>
                     <div style="text-align: center;">
-                        <a href="http://localhost:3000/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=Yes" style="color: cornflowerblue; font-weight: bold; font-size: 2rem;">  YES</a>
-                        <a href="http://localhost:3000/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=No" style="color: cornflowerblue;  margin-left:100px; font-weight: bold; font-size: 2rem;">  NO</a>
+                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=Yes" style="color: cornflowerblue; font-weight: bold; font-size: 2rem;">  YES</a>
+                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=No" style="color: cornflowerblue;  margin-left:100px; font-weight: bold; font-size: 2rem;">  NO</a>
                     </div>
             </body>
             </html>
@@ -48,19 +48,17 @@ const generateMailOptions =(reciverObj, senderObj) => {
       };
     }
 
-const sendMail = (reciverObj, senderObj) =>{
+const sendMail = (reciverObj, senderObj, {body, subject}) =>{
     const allPromisesGeneratorForSendingEmails =[];
     reciverObj.forEach(async (reciver,index) =>{
-        const mailOptions =  generateMailOptions(reciver, senderObj);
+        const mailOptions =  generateMailOptions(reciver, senderObj,body,subject);
         allPromisesGeneratorForSendingEmails.push(() => transporter.sendMail(mailOptions))  
     })
 
-    Promise.all(allPromisesGeneratorForSendingEmails.map(eachPromiseGenerator => eachPromiseGenerator()))
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
+   return Promise.all(allPromisesGeneratorForSendingEmails.map(eachPromiseGenerator => eachPromiseGenerator()))
 }
 
-sendMail(Survey_Recivers, {id: 123, mail: 'Ayush.ayushjain12@gmail.com'})
+// sendMail(Survey_Recivers, {id: 123, mail: 'Ayush.ayushjain12@gmail.com'})
 
 module.exports = sendMail;
 

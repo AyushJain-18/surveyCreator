@@ -15,7 +15,8 @@ const connectTODB  = require('./services/db.setup');
 // routes
 const getUserDetails = require('./routes/getUser.routes');
 const addMoreCredits = require('./routes/credits.routes');
-const logoutRoute    = require('./routes/logout.routes') 
+const logoutRoute    = require('./routes/logout.routes');
+const surveyRoutes   = require('./routes/surveys.routes') ;
 
 connectTODB();
 
@@ -50,6 +51,7 @@ require('./routes/google-auth-routes')(app);
 app.use('/', getUserDetails);
 app.use('/', addMoreCredits);
 app.use('/', logoutRoute);
+app.use('/', surveyRoutes);
 
 //  --------------loading React for Production---------------
 if(process.env.NODE_ENV==='production'){

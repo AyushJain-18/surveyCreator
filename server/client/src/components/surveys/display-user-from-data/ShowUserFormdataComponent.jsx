@@ -12,7 +12,9 @@ const ShowUserData =({userFormData}) =>{
                     <div className='eachData'> <span style={{color: 'cornflowerblue'}}>Survey Title</span>    <span>{title}</span>            </div>
                     <div className='eachData'>< span style={{color: 'cornflowerblue'}}>Email Subject</span>   <span>{subject}</span>          </div>
                     <div className='eachData'> <span style={{color: 'cornflowerblue'}}>Email Body</span>      <span>{body}</span>             </div>
-                    <div className='eachData'> <span style={{color: 'cornflowerblue'}}>Recipient List</span>  <span>{recipientList}</span>    </div>
+                    <div className='eachData'> <span style={{color: 'cornflowerblue'}}>Recipient List</span>  
+                                <div>{recipientList.map((eachRecipient, index) => <div key ={index} style={{wordBreak: 'break-all'}}>{`${index+1}. ${eachRecipient}`}</div>)}</div>  
+                    </div>
                 </div>
         </div>
     )

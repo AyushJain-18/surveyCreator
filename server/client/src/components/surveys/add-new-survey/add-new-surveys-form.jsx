@@ -22,9 +22,14 @@ const AddNewSurveysForm = ({userCredit, userFormData, saveData}) => {
         const {name, value} = event.target;
         setFormValue({...formValue, [`${name}`]: value })
     }
+    const formatRecipientList =(recipientList) =>{
+        return  String(recipientList).split(',').map(eachRecipeint => eachRecipeint.trim());
+    }
     const onFormSubmmit =(event) => {
         event.preventDefault();
-        saveData(formValue);
+        let data = formValue;
+        data.recipientList = formatRecipientList(formValue.recipientList)
+        saveData(data);
        
     }
     const {title, subject, body, recipientList} = formValue;

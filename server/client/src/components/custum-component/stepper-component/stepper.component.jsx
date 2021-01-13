@@ -137,7 +137,7 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
         ) : (
           <div>
             <Typography className={classes.instructions}>
-               {/* { components[activeStep]} */}
+               { components[activeStep]}
             </Typography>
             <div className='form-button-container'>
               <button  className='stepper-button' onClick={ 
@@ -147,8 +147,7 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
                 >Back
               </button>
               <button  className='stepper-button'  style={!userFormData?{cursor: 'not-allowed'}:{}}
-              onClick={handleNext} >
-                {/* disabled={!userFormData} */}
+              onClick={handleNext} disabled={!userFormData} >
                  {activeStep === steps.length - 1 ? 'Generate Survey' : 'Next'}
               </button>
             </div>
