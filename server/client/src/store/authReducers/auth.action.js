@@ -70,6 +70,19 @@ export const addSurveyFormDataToReducer  =(formData) =>{
 export const clearSurveyFormDataFromReducer  =() =>({
     type:  authTypes.CLEAR_SURVEY_FORM_DATA
 })
+
+export const startGeneratingSurvey  =() =>({
+    type:  authTypes.START_GENERATING_SURVEY
+})
+export const successGeneratingSurvey  =() =>({
+    type:  authTypes.SUCCESS_GENERATING_SURVEY
+})
+export const errorGeneratingSurvey  =() =>({
+    type:  authTypes.ERROR_GENERATING_SURVEY
+})
+export const resetSurveyStatus =() =>({
+    type:  authTypes.RESET_SURVEY_STATUS
+})
 // --------------Assonchronous action creator ------------- //
 
 export const startFetchingUserLoginDetailsAsync = ()=>{
@@ -77,7 +90,8 @@ export const startFetchingUserLoginDetailsAsync = ()=>{
         dispatch(startFetchingUserLoginDetails());
         try{
             let response = await axios.get(`/api/getCurrentUser`);
-            dispatch(successfullyFetchedUserLoginDetails(response.data))
+            dispatch(successfullyFetchedUserLoginDetails(response.data));
+            dispatch(clearSurveyFormDataFromReducer());
         } catch(error){
                 if(error.message === ERROR_AUTH_MESSAGE){
                     dispatch(successfullyFetchedUserLoginDetails(null));
@@ -112,6 +126,7 @@ export const startUserLogoutAsync = ()=>{
             let response = await axios.get('/auth/google');
             console.log('Login response is',response);
             dispatch(userLogoutSuccess());
+            dispatch(clearSurveyFormDataFromReducer());
         } catch(error){
             errorLogger(error, 'Error occored while logging with google');
             dispatch(userLogoutFailure())
@@ -119,7 +134,22 @@ export const startUserLogoutAsync = ()=>{
     }
 }
 
+export const startGeneratingSurveyAsync =  (surveyData)=>{
+    return  async dispatch=> {
+            dispatch(startGeneratingSurvey());
+            console.log('SurveyData is', surveyData)
+            try{
+                await axios.post('/api/generateSurvey', surveyData)
+                dispatch(successGeneratingSurvey());
+                dispatch(clearSurveyFormDataFromReducer());
 
+            } catch(error){
+                errorLogger(error, 'Error occored while generating Survey');
+                dispatch(errorGeneratingSurvey());
+            }
+            
+    }
+}
 
 
 

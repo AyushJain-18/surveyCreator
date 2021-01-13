@@ -12,4 +12,8 @@ export const selectIsUserAuthError    = createSelector([selectAuth], auth=> auth
 
 export const selectUserFormData       = createSelector([selectAuth],  auth=>  auth.formData);
 
+export const selectErrorGeneratingSurvey = createSelector([selectAuth],  auth=>  auth.isSurveyGenerateError);
+
+export const selectSurveyGeneratorSuccess = createSelector([selectAuth],  auth=>  auth.isSurveyGenerateSuccess);
+
 export const selectIsFetchingUserAuth = createSelector([selectAuth], auth=> auth.isLoading);

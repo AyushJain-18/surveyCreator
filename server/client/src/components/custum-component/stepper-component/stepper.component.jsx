@@ -18,8 +18,10 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
-import {clearSurveyFormDataFromReducer} from '../../../store/authReducers/auth.action';
-import {selectUserFormData} from '../../../store/authReducers/auth.selector'
+import {clearSurveyFormDataFromReducer, startGeneratingSurveyAsync, resetSurveyStatus} from '../../../store/authReducers/auth.action';
+import {selectUserFormData, selectLogedInUserData, 
+        selectErrorGeneratingSurvey, selectSurveyGeneratorSuccess,
+   selectIsFetchingUserAuth as selectIsGeneratingSurvey} from '../../../store/authReducers/auth.selector'
 
 
 
@@ -37,33 +39,48 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  generationSurveyContainer:{
+      display: 'flex',
+      padding: '50px 0px',
+      height  : '30vh', 
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+  },
+  generatingMsg: {
+    fontSize: '2rem',
+    color: 'cornflowerblue',
+    fontWeight: 'bold'
+  }
 }));
 
 const Alert = (props)=> {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const  StepperComponent =({components, headerTitle, history, userFormData, clearFormData}) => {
+const  StepperComponent =({components, headerTitle, history, userFormData, resetSurveyStatus,
+                          isErrorGeneratingSurvey, isSuccessGeneratinSurvey,
+                          clearFormData, startGenerateForm,userData, isGeneratingSurvey}) => {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  React.useEffect(()=>{
-    if(userFormData){
-      setOpen(true);
-    }
-  },[userFormData])
+  const [openSnackBar, setOpenSnackBar]           = React.useState(false);
+  const [SnackbarServity, setSnackbarServity]     = React.useState('');
+  const [SnackbarMessage, setSnackBarMessage]     = React.useState('');
+  const [activeStep, setActiveStep]               = React.useState(0);
 
   const steps = headerTitle;
 
   const handleNext = () => {
     if(activeStep === steps.length - 1){
-      clearFormData();
+       startGenerateForm({surveyData: userFormData, user_profile_id: userData.profile_id});
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-
+  const resetStepper =()=>{
+    setActiveStep(0);
+    setOpenSnackBar(false);
+    resetSurveyStatus();
+  }
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -73,14 +90,31 @@ const  StepperComponent =({components, headerTitle, history, userFormData, clear
       return;
     }
 
-    setOpen(false);
+    setOpenSnackBar(false);
   };
+  React.useEffect(()=>{
+    if(userFormData){
+      setOpenSnackBar(true);
+      setSnackbarServity('success')
+      setSnackBarMessage('Form value successfully store, click next to proceed');
+    }
+    if(isErrorGeneratingSurvey){
+      setOpenSnackBar(true);
+      setSnackbarServity('error')
+      setSnackBarMessage('Error generating survey');
+    }
+    if(isSuccessGeneratinSurvey){
+      setOpenSnackBar(true);
+      setSnackbarServity('success')
+      setSnackBarMessage('Success generating Survey');
+    }
+  },[userFormData, isErrorGeneratingSurvey, isSuccessGeneratinSurvey]);
 
   return (
     <div className={classes.root}>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleCloseSnackBar}>
-            <Alert onClose={handleCloseSnackBar} severity="success">
-              Form value successfully store, click next to proceed
+        <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+            <Alert onClose={handleCloseSnackBar} severity={SnackbarServity}>
+              {SnackbarMessage}
             </Alert>
         </Snackbar>
       <Stepper style={{backgroundColor: 'whitesmoke'}} activeStep={activeStep} alternativeLabel>
@@ -92,15 +126,19 @@ const  StepperComponent =({components, headerTitle, history, userFormData, clear
       </Stepper>
       <div>
         {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-                Generating Survey please wait !!
-              </Typography>
-              <CircularProgress   color="secondary"/>
-          </div>
+              <div  className={classes.generationSurveyContainer} >
+                <Typography  className={classes.generatingMsg}>
+                  {!isSuccessGeneratinSurvey && !isErrorGeneratingSurvey && <> Generating Survey please wait</> }
+                  {isSuccessGeneratinSurvey  && <div className='final-button' onClick={()=>{resetStepper(); history.push('/surveys');}}> Back to Survey Dashboard</div> }
+                  {isErrorGeneratingSurvey   && <div  className='final-button' onClick={resetStepper}> Error Occured Try Again</div> }
+                  </Typography>
+                  {isGeneratingSurvey && <CircularProgress color="secondary"/>}
+              </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>{ components[activeStep]}</Typography>
+            <Typography className={classes.instructions}>
+               {/* { components[activeStep]} */}
+            </Typography>
             <div className='form-button-container'>
               <button  className='stepper-button' onClick={ 
                       (activeStep === 0)? 
@@ -109,7 +147,8 @@ const  StepperComponent =({components, headerTitle, history, userFormData, clear
                 >Back
               </button>
               <button  className='stepper-button'  style={!userFormData?{cursor: 'not-allowed'}:{}}
-              onClick={handleNext} disabled={!userFormData}>
+              onClick={handleNext} >
+                {/* disabled={!userFormData} */}
                  {activeStep === steps.length - 1 ? 'Generate Survey' : 'Next'}
               </button>
             </div>
@@ -120,10 +159,17 @@ const  StepperComponent =({components, headerTitle, history, userFormData, clear
   );
 }
 const mapStateToProps = state =>({
-    userFormData : selectUserFormData(state)
+    userFormData                : selectUserFormData(state),
+    userData                    : selectLogedInUserData(state),
+    isGeneratingSurvey          : selectIsGeneratingSurvey(state),
+    isErrorGeneratingSurvey     : selectErrorGeneratingSurvey(state),
+    isSuccessGeneratinSurvey    : selectSurveyGeneratorSuccess(state)
 })
 const mapDispatchToProps = dispatch =>({
-  clearFormData: (()=> dispatch(clearSurveyFormDataFromReducer()))
+  clearFormData     : ()=> dispatch(clearSurveyFormDataFromReducer()),
+  resetSurveyStatus : ()=> dispatch(resetSurveyStatus()),
+  startGenerateForm : (surveyData)=> dispatch(startGeneratingSurveyAsync(surveyData))
+
 });
 
 export default compose(

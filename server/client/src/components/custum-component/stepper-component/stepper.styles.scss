@@ -1,6 +1,6 @@
 .form-button-container{
     display         : flex;
-    justify-content : space-between;
+    justify-content : space-around;
     align-items     : flex-end;
     padding         : 10px 50px;
     margin          : 20px 40px ;
@@ -25,5 +25,18 @@
         &:active{
             transform: scale(0.95);
         }  
+    }
+}
+
+.final-button{
+    &:hover{
+        filter: brightness(1.1);
+        cursor: pointer;
+    }
+    &:focus{
+        outline: none;
+    }
+    &:active{
+        transform: scale(0.95);
     }
 }
