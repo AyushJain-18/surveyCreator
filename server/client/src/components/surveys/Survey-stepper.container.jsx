@@ -3,12 +3,25 @@ import AddNewSurveysForm from './add-new-survey/add-new-surveys-form';
 import StepperComponent from '../custum-component/stepper-component/stepper.component';
 
 import ShowUserData from '../surveys/display-user-from-data/ShowUserFormdataComponent';
+import {selectIsUserLogedIn} from '../../store/authReducers/auth.selector';
 
-const SurveyStepperContainer = ()=>{
+import {withRouter} from 'react-router-dom';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
+
+const SurveyStepperContainer = ({history, isUserLogedIn})=>{
+    if(!isUserLogedIn){
+            history.push('/');
+    }
     return <StepperComponent 
                 components={[<AddNewSurveysForm/>,<ShowUserData/>]}
                  headerTitle={ ['Fill out survey creator form', 'Confirm form values']}
             />
 };
-
-export default SurveyStepperContainer;
+const mapStateToPorops =state =>({
+    isUserLogedIn: selectIsUserLogedIn(state)
+})
+export default compose(
+    connect(mapStateToPorops),
+    withRouter)
+    (SurveyStepperContainer);
