@@ -27,7 +27,7 @@ const getUserIdFromUserProfileId = async (profileID) =>{
       return user._id;
     }catch(error){
         console.log('//Errro// while fetching users data', error.message);
-        return res.status(430).send();
+        return res.status(430).send('User details cannot be fetched');
     }
 }
 
@@ -64,12 +64,13 @@ Routes.post('/api/generateSurvey',authMiddelware, checkUserCredit, async (req,re
         console.log('//Errro occured// while adding data to survey', error.message);
         return res.status(430).send();
     }
-    res.send();
+    res.send('Successfully generated the survey');
 })
 
-Routes.get('/hello', (req,res) => {
-    getUserIdFromUserProfileId('108674530653786194347');
-    res.send('success')
+Routes.post('/api/sureyResponse', (req,res) => {
+    console.log(req.body);
+    // getUserIdFromUserProfileId('108674530653786194347');
+    res.send(req.body);
 })
 
 

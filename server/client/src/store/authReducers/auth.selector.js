@@ -1,6 +1,12 @@
 import {createSelector} from  'reselect';
 
-export const selectAuth = state => state.auth;
+//isLoadingSurvey
+// isLoadingForAddingSurveyResponse    : false,
+// isAddingSurveyResponseError         : false,
+// isAddingSurveyResponseSuccess       : false
+
+export const selectAuth = state => state.auth; 
+
 
 export const selectIsUserLogedIn      = createSelector([selectAuth], auth => !!(auth.userDetails && auth.userDetails.display_name));
 
@@ -16,4 +22,12 @@ export const selectErrorGeneratingSurvey = createSelector([selectAuth],  auth=> 
 
 export const selectSurveyGeneratorSuccess = createSelector([selectAuth],  auth=>  auth.isSurveyGenerateSuccess);
 
-export const selectIsFetchingUserAuth = createSelector([selectAuth], auth=> auth.isLoading);
+export const selectIsFetchingUserAuth   = createSelector([selectAuth], auth=> auth.isLoading);
+
+export const selectIsLoadingSurvey      = createSelector([selectAuth], auth=> auth.isLoadingSurvey);
+
+export const selectIsLoadingForAddingSurveyResponse = createSelector([selectAuth], auth=> auth.isLoadingForAddingSurveyResponse);
+
+export const selectIsAddingSurveyResponseError = createSelector([selectAuth], auth=> auth.isAddingSurveyResponseError);
+
+export const selectIsAddingSurveyResponseSuccess = createSelector([selectAuth], auth=> auth.isAddingSurveyResponseSuccess);

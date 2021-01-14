@@ -2,10 +2,14 @@ import authTypes from './auth.actiontypes'
 const INITIAL_AUTH_STATE = {
     isAuthError             : false,
     isLoading               : false,
+    isLoadingSurvey         : false,
     formData                : null,
     isSurveyGenerateError   : false,
     isSurveyGenerateSuccess : false, 
-    userDetails             : null 
+    userDetails             : null,
+    isLoadingForAddingSurveyResponse    : false,
+    isAddingSurveyResponseError         : false,
+    isAddingSurveyResponseSuccess       : false
 }
 const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
     switch(action.type){
@@ -13,13 +17,10 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
         case authTypes.START_USER_LOGOUT:
         case authTypes.START_FETCHING_USER_LOGIN_DETAILS:
         case authTypes.START_ADDING_CREDIT:
-        case authTypes.START_GENERATING_SURVEY:    
             return{
                 ...state,
                 isLoading: true,
                 isAuthError: false,
-                isSurveyGenerateError: false,
-                isSurveyGenerateSuccess: false
             }
         case authTypes.ERROR_USER_LOGIN :
         case authTypes.ERROR_USER_LOGOUT:
@@ -30,17 +31,24 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
                 isAuthError: true,
                 isLoading: false,
             }
+        case authTypes.START_GENERATING_SURVEY: 
+        return{
+            ...state,
+            isLoadingSurvey: true,
+            isSurveyGenerateError: false,
+            isSurveyGenerateSuccess: false
+        } 
         case authTypes.ERROR_GENERATING_SURVEY:
             return{
                 ...state,
                 isSurveyGenerateError: true,
-                isLoading: false,
+                isLoadingSurvey: false,
                 isSurveyGenerateSuccess: false
             }
         case authTypes.SUCCESS_GENERATING_SURVEY :
             return{
                 ...state,
-                isLoading: false,
+                isLoadingSurvey: false,
                 isSurveyGenerateError: false,
                 isSurveyGenerateSuccess: true
             }
@@ -75,6 +83,27 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
             return{
                 ...state,
                 formData: null
+            }
+        case authTypes.START_CAPTURING_SURVEY_RESPONSE :
+            return{
+                ...state,
+                isLoadingForAddingSurveyResponse: true,
+                isAddingSurveyResponseSuccess: false,
+                isAddingSurveyResponseError: false
+            }
+        case authTypes.SUCCESS_CAPTURING_SURVEY_RESPONSE :
+            return{
+                ...state,
+                isLoadingForAddingSurveyResponse: false,
+                isAddingSurveyResponseSuccess: true,
+                isAddingSurveyResponseError: false
+            }
+        case authTypes.ERROR_CAPTURING_SURVEY_RESPONSE :
+            return{
+                ...state,
+                isAddingSurveyResponseSuccess: false,
+                isLoadingForAddingSurveyResponse: false,
+                isAddingSurveyResponseError: true
             }
         default: return state
     }

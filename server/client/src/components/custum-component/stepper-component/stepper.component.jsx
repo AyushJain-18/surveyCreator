@@ -23,7 +23,7 @@ import {compose} from 'redux';
 import {clearSurveyFormDataFromReducer, startGeneratingSurveyAsync, resetSurveyStatus} from '../../../store/authReducers/auth.action';
 import {selectUserFormData, selectLogedInUserData, 
         selectErrorGeneratingSurvey, selectSurveyGeneratorSuccess,
-   selectIsFetchingUserAuth as selectIsGeneratingSurvey} from '../../../store/authReducers/auth.selector'
+        selectIsLoadingSurvey as selectIsGeneratingSurvey} from '../../../store/authReducers/auth.selector'
 
 
 
@@ -171,7 +171,7 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
         ) : (
           <div>
             <Typography className={classes.instructions}>
-               {/* { components[activeStep]} */}
+               { components[activeStep]}
             </Typography>
             <div className='form-button-container'>
               <button  className='stepper-button' onClick={ 
@@ -181,8 +181,8 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
                 >Back
               </button>
               <button  className='stepper-button'  style={!userFormData?{cursor: 'not-allowed'}:{}}
-              onClick={handleNext} title={!userFormData ? 'please submit form first': 'click next to proceed'}>
-                {/*disabled={!userFormData} */}
+              onClick={handleNext} disabled={!userFormData} title={!userFormData ? 'please submit form first': 'click next to proceed'}>
+                {/* */}
                  {activeStep === steps.length - 1 ? 'Generate Survey' : 'Next'}
               </button>
             </div>

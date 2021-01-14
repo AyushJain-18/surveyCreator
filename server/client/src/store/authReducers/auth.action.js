@@ -83,6 +83,18 @@ export const errorGeneratingSurvey  =() =>({
 export const resetSurveyStatus =() =>({
     type:  authTypes.RESET_SURVEY_STATUS
 })
+// -------------ADDING SURVEY RESPONSE TO DB ----------------------//
+export const startAddingSurveyResponse =() =>({
+    type:  authTypes.START_CAPTURING_SURVEY_RESPONSE
+})
+export const successAddingSurveyResponse  =() =>({
+    type:  authTypes.SUCCESS_CAPTURING_SURVEY_RESPONSE
+})
+export const errorAddingSurveyResponse  =() =>({
+    type:  authTypes.ERROR_CAPTURING_SURVEY_RESPONSE
+})
+
+
 // --------------Assonchronous action creator ------------- //
 
 export const startFetchingUserLoginDetailsAsync = ()=>{
@@ -151,5 +163,19 @@ export const startGeneratingSurveyAsync =  (surveyData)=>{
     }
 }
 
+export const startAddingSurveyResponseAsync =(data) => {
+    let {surveyGeneratorId, reciverMailId,response} = data;
+    return async dispatch =>{
+        dispatch(startAddingSurveyResponse());
+        try{
+            await axios.post('/api/sureyResponse', {surveyGeneratorId, reciverMailId,response});
+            dispatch(successAddingSurveyResponse());
+        } catch(error){
+            errorLogger(error, 'Error occored while adding survey response');
+            dispatch(errorAddingSurveyResponse());
+        }
+    
+    }
+}
 
 
