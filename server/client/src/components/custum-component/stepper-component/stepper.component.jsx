@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   generationSurveyContainer:{
       display: 'flex',
       padding: '50px 0px',
-      height  : '60vh', 
+      height  : '30vh', 
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between'
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     color: 'red',
     fontWeight: 'bold',
-    height: '100vh'
+    height: '60vh'
 
   }
 }));
@@ -141,12 +141,16 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
       </Stepper>
       <div>
         {activeStep === steps.length ? (
-              <div  className={classes.generationSurveyContainer} >
-                <Typography  className={classes.generatingMsg}>
-                  {!isSuccessGeneratinSurvey && !isErrorGeneratingSurvey && <> Generating Survey please wait</> }
-                  {isErrorGeneratingSurvey   && <div  className='final-button' onClick={resetStepper}> Error Occured Try Again</div> }
-                  </Typography>
-                  {isSuccessGeneratinSurvey  && 
+          <>
+              { !isSuccessGeneratinSurvey && <div  className={classes.generationSurveyContainer} >
+                  <Typography  className={classes.generatingMsg}>
+                    {!isSuccessGeneratinSurvey && !isErrorGeneratingSurvey && <> Generating Survey please wait</> }
+                    {isErrorGeneratingSurvey   && <div  className='final-button' onClick={resetStepper}> Error Occured Try Again</div> }
+                    </Typography>
+                  {isGeneratingSurvey && <CircularProgress color="secondary"/>}
+                 </div>
+                }
+                { isSuccessGeneratinSurvey  && 
                         <div className ={classes.timmer}>   
                           <div style={{fontSize: '3rem', color: 'blue'}} > Survey generated successfully!!</div>
                           <div> redirecting back to Survey dashboard page</div>
@@ -161,13 +165,13 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
                                {({ remainingTime }) => `${remainingTime}`}
                           </CountdownCircleTimer>
                         </div>
-                  }
-                  {isGeneratingSurvey && <CircularProgress color="secondary"/>}
-              </div>
+                }
+            </>
+              
         ) : (
           <div>
             <Typography className={classes.instructions}>
-               { components[activeStep]}
+               {/* { components[activeStep]} */}
             </Typography>
             <div className='form-button-container'>
               <button  className='stepper-button' onClick={ 
@@ -177,8 +181,8 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
                 >Back
               </button>
               <button  className='stepper-button'  style={!userFormData?{cursor: 'not-allowed'}:{}}
-              onClick={handleNext} disabled={!userFormData} title={!userFormData ? 'please submit form first': 'click next to proceed'}>
-                {/*    */}
+              onClick={handleNext} title={!userFormData ? 'please submit form first': 'click next to proceed'}>
+                {/*disabled={!userFormData} */}
                  {activeStep === steps.length - 1 ? 'Generate Survey' : 'Next'}
               </button>
             </div>

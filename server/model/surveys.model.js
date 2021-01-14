@@ -2,7 +2,7 @@ const User = require('./user.model')
 const mongoose = require('mongoose');
 let recipentSchema = new mongoose.Schema({
     email       : String,
-    responded   : {type: Boolean, default: false}
+    response    : {type: Boolean, default: false}
 })
 let surveySchema = new mongoose.Schema({
     user: {
@@ -17,7 +17,7 @@ let surveySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Subject: {
+    subject: {
         type: String,
         required: true
     },

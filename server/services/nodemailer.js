@@ -39,8 +39,8 @@ const generateMailOptions =(reciverObj, senderObj,body,subject) => {
                         <h3 style="color: cadetblue; font-weight: bold; font-size: 2.5rem;" >      Do you like our survey creator?</h3>
                         </div>
                     <div style="text-align: center;">
-                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=Yes" style="color: cornflowerblue; font-weight: bold; font-size: 2rem;">  YES</a>
-                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyId=${senderObj.id}&reciverId=${reciverObj.mail}&response=No" style="color: cornflowerblue;  margin-left:100px; font-weight: bold; font-size: 2rem;">  NO</a>
+                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyGeneratorId=${senderObj.id}&reciverMailId=${reciverObj.mail}&response=Yes" style="color: cornflowerblue; font-weight: bold; font-size: 2rem;">  YES</a>
+                        <a href="${process.env.CLIENT_APP_ROUTES}/SurveyResponse?surveyGeneratorId=${senderObj.id}&reciverMailId=${reciverObj.mail}&response=No" style="color: cornflowerblue;  margin-left:100px; font-weight: bold; font-size: 2rem;">  NO</a>
                     </div>
             </body>
             </html>

@@ -5,6 +5,9 @@ import { withRouter } from 'react-router-dom';
 const UserResponse = (props) => {
     let params = queryString.parse(props.location.search);
     console.log( 'params', params)
+    //surveyGeneratorId
+    //reciverMailId
+    //response
     return (
         <div>
             Hello

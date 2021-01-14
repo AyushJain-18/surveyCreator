@@ -3,13 +3,22 @@ const authMiddelware = require('../middelware/authenticate.middelware').authenti
 const checkUserCredit = require('../middelware/authenticate.middelware').checkUserCredit;
 const sendMail = require('../services/nodemailer');
 
-const User = require('../model/user.model');
-
+const User      = require('../model/user.model');
+const Survey    = require('../model/surveys.model');
 
 const Routes = express.Router();
 
-const construstSurveyReciverObject = (recipientList) =>{
+const construstSurveyReciverObjectForNodeMailler = (recipientList) =>{
    return  recipientList.map(eachRecipeint => ({mail: String(eachRecipeint).trim()}))
+}
+
+const construstSurveyReciverArray = (recipientList) =>{
+    return  recipientList.map(eachRecipeint => (
+            {
+                email: String(eachRecipeint).trim(),
+                response: false
+            }
+        ))
 }
 
 const getUserIdFromUserProfileId = async (profileID) =>{
@@ -23,7 +32,6 @@ const getUserIdFromUserProfileId = async (profileID) =>{
 }
 
 Routes.post('/api/generateSurvey',authMiddelware, checkUserCredit, async (req,res) =>{
-    let userID = getUserIdFromUserProfileId(req.body.user_profile_id)
     // SAMPLE BODY DATA ----------------------------------------->
 
             // { surveyData:
@@ -33,16 +41,27 @@ Routes.post('/api/generateSurvey',authMiddelware, checkUserCredit, async (req,re
             //       recipientList: 'ayush.ayushjain12@gmail.com,ishu11jain@gmail.com' },
             //    user_profile_id: '108674530653786194347' }
 
+
+     //sendMail(array of recipeints, sender's objecct, {emailBody, emailSubject} 
+
     // ----------------------------------------->
-
-
-    let recipientList = construstSurveyReciverObject(req.body.surveyData.recipientList);
-    //sendMail(array of recipeints, sender's objecct, {emailBody, emailSubject} )
+    let userID          = await getUserIdFromUserProfileId(req.body.user_profile_id);
+    let recipientList   = construstSurveyReciverObjectForNodeMailler(req.body.surveyData.recipientList);
+    
+    let surveyObject ={
+        user      : userID,
+        title     : req.body.surveyData.title,
+        body      : req.body.surveyData.body,
+        subject   : req.body.surveyData.subject,
+        recipents : construstSurveyReciverArray(req.body.surveyData.recipientList),
+    }
     try{
+        let survey = await Survey.create(surveyObject);
+        console.log('Survey is ', survey);
         let response = await sendMail(recipientList, {id: userID, mail:req.body.senderMail},req.body.surveyData);
         console.log('//SUCCESS// sending mail', response);
     }catch(error){
-        console.log('//Errro// while sending mails to users', error.message);
+        console.log('//Errro occured// while adding data to survey', error.message);
         return res.status(430).send();
     }
     res.send();
