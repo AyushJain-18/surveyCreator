@@ -29,8 +29,9 @@
 }
 
 .final-button{
+    color: coral;
     &:hover{
-        filter: brightness(1.1);
+        filter: brightness(1.5);
         cursor: pointer;
     }
     &:focus{

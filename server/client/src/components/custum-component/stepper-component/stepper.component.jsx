@@ -12,6 +12,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+
 
 
 import {withRouter} from 'react-router-dom';
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   generationSurveyContainer:{
       display: 'flex',
       padding: '50px 0px',
-      height  : '30vh', 
+      height  : '60vh', 
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between'
@@ -51,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2rem',
     color: 'cornflowerblue',
     fontWeight: 'bold'
+  },
+  timmer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around', 
+    alignItems: 'center',
+    fontSize: '1rem',
+    color: 'red',
+    fontWeight: 'bold',
+    height: '100vh'
+
   }
 }));
 
@@ -112,7 +125,9 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
 
   return (
     <div className={classes.root}>
-        <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+        <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}
+           anchorOrigin={{vertical: 'top', horizontal: 'center' }}
+        >
             <Alert onClose={handleCloseSnackBar} severity={SnackbarServity}>
               {SnackbarMessage}
             </Alert>
@@ -129,9 +144,24 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
               <div  className={classes.generationSurveyContainer} >
                 <Typography  className={classes.generatingMsg}>
                   {!isSuccessGeneratinSurvey && !isErrorGeneratingSurvey && <> Generating Survey please wait</> }
-                  {isSuccessGeneratinSurvey  && <div className='final-button' onClick={()=>{resetStepper(); history.push('/surveys');}}> Back to Survey Dashboard</div> }
                   {isErrorGeneratingSurvey   && <div  className='final-button' onClick={resetStepper}> Error Occured Try Again</div> }
                   </Typography>
+                  {isSuccessGeneratinSurvey  && 
+                        <div className ={classes.timmer}>   
+                          <div style={{fontSize: '3rem', color: 'blue'}} > Survey generated successfully!!</div>
+                          <div> redirecting back to Survey dashboard page</div>
+                          <CountdownCircleTimer isPlaying duration={10}
+                              colors={[
+                                    ['#004777', 0.33],
+                                    ['#F7B801', 0.33],
+                                    ['#A30000', 0.33],
+                                ]}
+                                onComplete ={()=> {resetStepper(); history.push('/surveys')}}
+                                >
+                               {({ remainingTime }) => `${remainingTime}`}
+                          </CountdownCircleTimer>
+                        </div>
+                  }
                   {isGeneratingSurvey && <CircularProgress color="secondary"/>}
               </div>
         ) : (
@@ -147,7 +177,8 @@ const  StepperComponent =({components, headerTitle, history, userFormData, reset
                 >Back
               </button>
               <button  className='stepper-button'  style={!userFormData?{cursor: 'not-allowed'}:{}}
-              onClick={handleNext} disabled={!userFormData} >
+              onClick={handleNext} disabled={!userFormData} title={!userFormData ? 'please submit form first': 'click next to proceed'}>
+                {/*    */}
                  {activeStep === steps.length - 1 ? 'Generate Survey' : 'Next'}
               </button>
             </div>
