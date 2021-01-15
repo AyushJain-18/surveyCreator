@@ -94,6 +94,23 @@ export const errorAddingSurveyResponse  =() =>({
     type:  authTypes.ERROR_CAPTURING_SURVEY_RESPONSE
 })
 
+// -------------FETCHING USER SURVEY RESPONSE DATA ----------------------//
+export const startFetchingUserSurveyData =() =>({
+    type:  authTypes.START_FETCHING_USER_SURVEY_DATA
+})
+export const successFetchingUserSurveyData  =(surveyData) =>({
+    type:  authTypes.SUCCESS_FETCHING_USER_SURVEY_DATA,
+    payload: surveyData
+})
+export const errorFetchingUserSurveyData  =() =>({
+    type:  authTypes.ERROR_FETCHING_USER_SURVEY_DATA
+})
+// ----------------------UPDATE USER CREDIT -----------------------------//
+export const updateUserCredit = (credit)=>({
+    type        :  authTypes.UPDATE_USER_CREDIT,
+    payload     :  credit 
+})
+
 
 // --------------Assonchronous action creator ------------- //
 
@@ -151,8 +168,9 @@ export const startGeneratingSurveyAsync =  (surveyData)=>{
             dispatch(startGeneratingSurvey());
             console.log('SurveyData is', surveyData)
             try{
-                await axios.post('/api/generateSurvey', surveyData)
+               let response =  await axios.post('/api/generateSurvey', surveyData)
                 dispatch(successGeneratingSurvey());
+                dispatch(updateUserCredit(response.data.userCredit))
                 dispatch(clearSurveyFormDataFromReducer());
 
             } catch(error){
@@ -178,4 +196,16 @@ export const startAddingSurveyResponseAsync =(data) => {
     }
 }
 
-
+export const startFetchingUserSurveyDataAsync =(user_id) => {
+    return async dispatch =>{
+                dispatch(startFetchingUserSurveyData());
+                try{
+                    // throw new Error;
+                    let response = await axios.post('/api/getSurvey', {user_id});
+                    dispatch(successFetchingUserSurveyData(response.data))
+                } catch(error){
+                    errorLogger(error, 'Error occored while fetching user survey response');
+                    dispatch(errorFetchingUserSurveyData())
+                }
+    }
+}

@@ -1,18 +1,60 @@
 .survey-container{
-    background-color    : rgba(226, 226, 226, 0.8);
-    width           : auto;
-    height          : 89vh;
-    display         : flex;
-    flex-direction  : column;
+    width               : 100%;
+    min-height          : 74vh;
+    margin-top          : -10vh ;
+    display             : flex;
+    flex-direction      : column;
+    align-items         : center;
+    justify-content     : space-around ;
+    position            : relative;
+}
+.survey-data-error{
+        font-size: 2rem;
+        color: rgb(255, 68, 0);
+        padding: 0px 30px;
+        font-weight: bold;
+}
+.survey-no-data{
+    font-size: 2rem;
+    color: rgb(0, 68, 255);
+    padding: 0px 30px;
+    font-weight: bold;
 }
 
-.survey-display-container{
-    min-height: 70vh;
+.survey-response-container{
+    width       : 50%;
+    padding     : 20px;
+    margin      : 0px auto 50px;
+    border      : 1px solid;
+    box-shadow  : 5px 5px 17px black;
+    border-radius: 5px;
+    font-size    : 2rem;
+    color: #00969b;
+
+    .eachSurvey{
+        display      : flex;
+        justify-content: space-between;
+    }
+    .eachSurveyHeader{
+        display             : flex;
+        justify-content     : center;
+        margin-bottom       : 10px;
+        color               : crimson;
+        font-weight         : bold
+    }
+    .eachSurveyResponse{
+        width: 40%;
+    }
 }
+
+
 
 .add-new-survey-iocn{
-    align-self: flex-end;
-    padding-right: 100px;
+    z-index: 100;
+    position: relative;
+    position: sticky;
+    top: 95vh;
+    left: 90vw;
     &:hover{
         filter: brightness(1.1);
         cursor: pointer;

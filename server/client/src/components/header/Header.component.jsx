@@ -12,13 +12,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
+import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
+
 
 import {Link} from 'react-router-dom';
 
@@ -36,25 +36,21 @@ import {
 
 
 // list component for drawer
-
+const getIcons = (index) =>{
+  if(index ===0){return <AccountCircleSharpIcon/>}
+  if(index ===1){return <PostAddOutlinedIcon />}
+}
 const DrawerList = ({classes, toggleDrawer}) => (
   <div className={classes.list} role="presentation"
     onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
     <List>
-      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-        <ListItem button key={text}>
-          <ListItemIcon> <InboxIcon /></ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-    <Divider />
-    <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        <ListItem button key={text}>
-          <ListItemIcon><MailIcon/></ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItem>
+      {['Profile', 'Surveys'].map((text, index) => (
+        <Link to={index === 0? '/Profile': index === 1? '/surveys': ''}>
+            <ListItem  button key={text}>
+              <ListItemIcon> {getIcons(index)}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+        </Link>
       ))}
     </List>
   </div>
@@ -107,10 +103,11 @@ class HeaderCompoennt extends React.Component {
           <div className={classes.root}>
             <AppBar className={classes.appbar} position="static">
               <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" 
+              {isUserLoggedIn &&
+              <IconButton edge="start" className={classes.menuButton} color="inherit" 
                             aria-label="menu" onClick={this.toggleDrawer(true)} >
-                  <MenuIcon />
-                </IconButton>
+                    <MenuIcon />
+                </IconButton> }
                 <Typography variant="h6" className={classes.title}>
                   <Link to='/'>Survey Generator</Link> 
                 </Typography>
@@ -120,9 +117,9 @@ class HeaderCompoennt extends React.Component {
                 { !isLoading && !isError && isUserLoggedIn  && <UserPersona userData = {userData}/> }
               </Toolbar>
             </AppBar>
-            <Drawer anchor='left' open={this.state.showDrowser} onClose={this.toggleDrawer(false)}>
-            <DrawerList classes={classes} toggleDrawer={this.toggleDrawer}/>
-          </Drawer>
+           {isUserLoggedIn && <Drawer anchor='left' open={this.state.showDrowser} onClose={this.toggleDrawer(false)}>
+            <DrawerList  classes={classes} toggleDrawer={this.toggleDrawer}/>
+          </Drawer>}
           </div>
         );
     }

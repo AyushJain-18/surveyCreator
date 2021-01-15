@@ -1,12 +1,16 @@
 import authTypes from './auth.actiontypes'
 const INITIAL_AUTH_STATE = {
-    isAuthError             : false,
-    isLoading               : false,
-    isLoadingSurvey         : false,
-    formData                : null,
-    isSurveyGenerateError   : false,
-    isSurveyGenerateSuccess : false, 
-    userDetails             : null,
+    isAuthError                 : false,
+    isLoading                   : false,
+    isLoadingSurvey             : false,
+    formData                    : null,
+    isSurveyGenerateError       : false,
+    isSurveyGenerateSuccess     : false, 
+    userDetails                 : null,
+    userCredit                  : 0,
+    userSurveyData              : null,
+    isFetchingUserSurveyData    : false,
+    errorFetchinUserSurveyData  : false,
     isLoadingForAddingSurveyResponse    : false,
     isAddingSurveyResponseError         : false,
     isAddingSurveyResponseSuccess       : false
@@ -59,14 +63,16 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
                 ...state,
                 isLoading: false,
                 isAuthError: false,
-                userDetails: action.payload
+                userDetails: action.payload,
+                userCredit: action.payload? action.payload.credit: 0,
             }
         case authTypes.SUCCESS_USER_LOGOUT :
         return{
             ...state,
             isLoading: false,
             isAuthError: false,
-            userDetails: null
+            userDetails: null,
+            userCredit: null
         }
         case authTypes.ADD_SURVEY_FORM_DATA :
             return{
@@ -105,6 +111,33 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
                 isLoadingForAddingSurveyResponse: false,
                 isAddingSurveyResponseError: true
             }
+
+        case authTypes.START_FETCHING_USER_SURVEY_DATA :
+            return{
+                ...state,
+                userSurveyData              : null,
+                isFetchingUserSurveyData    : true,
+                errorFetchinUserSurveyData  : false,
+            }
+        case authTypes.SUCCESS_FETCHING_USER_SURVEY_DATA:
+            return{
+                ...state,
+                userSurveyData              : action.payload,
+                isFetchingUserSurveyData    : false,
+                errorFetchinUserSurveyData  : false,
+            }
+        case authTypes.ERROR_FETCHING_USER_SURVEY_DATA :
+            return{
+                ...state,
+                userSurveyData              : null,
+                isFetchingUserSurveyData    : false,
+                errorFetchinUserSurveyData  : true,
+            }   
+        case authTypes.UPDATE_USER_CREDIT :
+            return{
+                ...state,
+                userCredit:  action.payload 
+            }   
         default: return state
     }
 }

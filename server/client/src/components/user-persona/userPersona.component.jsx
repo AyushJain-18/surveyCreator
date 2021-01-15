@@ -29,6 +29,7 @@ import {selectUserCredits} from '../../store/authReducers/auth.selector';
 import {startUserLogoutAsync} from '../../store/authReducers/auth.action';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
 
 
 
@@ -106,6 +107,14 @@ const UserPersona =({userData, history, userCredit}) =>{
     const onLogOut = (event) =>{
         handleClose(event);
         window.open('/api/logout',"_self");
+    } //onSurveyClick
+    const onProfileClick =(event)=>{
+      handleClose(event);
+      history.push('/profile');
+    }
+    const onSurveyClick =(event)=>{
+      handleClose(event);
+      history.push('/surveys');
     }
 
     const onCompleteStripePayement =() => handleToggle(stripeRef.current); 
@@ -141,7 +150,8 @@ const UserPersona =({userData, history, userCredit}) =>{
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}> <AccountCircleSharpIcon className={classes.icon}/>      Profile                 </MenuItem>
+                    <MenuItem onClick={onProfileClick}>  <AccountCircleSharpIcon className={classes.icon}/>      Profile                 </MenuItem>
+                    <MenuItem onClick={onSurveyClick}>  <PostAddOutlinedIcon className={classes.icon}/>      Survey                 </MenuItem>
                     <MenuItem ref={stripeRef}>       <AddCircleOutlineSharpIcon className={classes.icon}/>   <StripeCheckoutComponent onClose={onCompleteStripePayement}> Add Credit</StripeCheckoutComponent> </MenuItem>
                     <MenuItem onClick={handleClose}> <AttachMoneySharpIcon className={classes.icon}/>        You have {userCredit} Credits      </MenuItem>
                     <MenuItem onClick={onLogOut}>    <CloseSharpIcon className={classes.icon}/>              Logout                  </MenuItem>

@@ -4,13 +4,16 @@ import {createSelector} from  'reselect';
 // isLoadingForAddingSurveyResponse    : false,
 // isAddingSurveyResponseError         : false,
 // isAddingSurveyResponseSuccess       : false
+// userSurveyData              : action.payload,
+// isFetchingUserSurveyData    : false,
+// errorFetchinUserSurveyData  : false,
 
 export const selectAuth = state => state.auth; 
 
 
 export const selectIsUserLogedIn      = createSelector([selectAuth], auth => !!(auth.userDetails && auth.userDetails.display_name));
 
-export const selectUserCredits        = createSelector([selectAuth], auth => auth.userDetails?auth.userDetails.credit: null);
+export const selectUserCredits        = createSelector([selectAuth], auth => auth.userDetails?auth.userCredit: null);
 
 export const selectLogedInUserData    = createSelector([selectAuth], auth=> auth.userDetails);
 
@@ -31,3 +34,9 @@ export const selectIsLoadingForAddingSurveyResponse = createSelector([selectAuth
 export const selectIsAddingSurveyResponseError = createSelector([selectAuth], auth=> auth.isAddingSurveyResponseError);
 
 export const selectIsAddingSurveyResponseSuccess = createSelector([selectAuth], auth=> auth.isAddingSurveyResponseSuccess);
+
+export const selectUserSurveyData                = createSelector([selectAuth], auth=> auth.userSurveyData);
+
+export const selectIsFetchingUserSurveyData      = createSelector([selectAuth], auth=> auth.isFetchingUserSurveyData);
+
+export const selectUserSurveyDataError           = createSelector([selectAuth], auth=> auth.errorFetchinUserSurveyData);
