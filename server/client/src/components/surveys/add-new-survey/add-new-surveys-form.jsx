@@ -41,6 +41,12 @@ const AddNewSurveysForm = ({userCredit, userFormData, saveData}) => {
                         Add Credit
                     </div> 
                    </StripeCheckout>
+                   <div className='test-card-details-container'>  
+                   <div style={{borderBottom: '5px solid black', marginBottom: '20px'}}>TEST CARD DETAILS</div>  
+                   <div className='each-test-key'> <span>Test card number</span>  <span style={{width: '50%'}}>4242 4242 4242 4242</span>  </div>
+                   <div className='each-test-key'> <span>Month/year</span>        <span style={{width: '50%'}}>10/22</span>                 </div>
+                   <div className='each-test-key'> <span>CVV </span>              <span style={{width: '50%'}}>123</span></div>
+                   </div>               
              </div>
     }
     return (
@@ -75,7 +81,7 @@ const AddNewSurveysForm = ({userCredit, userFormData, saveData}) => {
                         <FormInput 
                             type  ='text'
                             name  ='recipientList'
-                            label ='Comma seprated Resipient list'
+                            label ='Comma seprated recipient  eamil address list'
                             value = {recipientList}
                             required
                             handleChange ={onFormValueChange}
