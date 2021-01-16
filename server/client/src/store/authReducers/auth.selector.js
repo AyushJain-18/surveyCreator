@@ -7,6 +7,7 @@ import {createSelector} from  'reselect';
 // userSurveyData              : action.payload,
 // isFetchingUserSurveyData    : false,
 // errorFetchinUserSurveyData  : false,
+// surveyResponse
 
 export const selectAuth = state => state.auth; 
 
@@ -40,3 +41,5 @@ export const selectUserSurveyData                = createSelector([selectAuth], 
 export const selectIsFetchingUserSurveyData      = createSelector([selectAuth], auth=> auth.isFetchingUserSurveyData);
 
 export const selectUserSurveyDataError           = createSelector([selectAuth], auth=> auth.errorFetchinUserSurveyData);
+
+export const selectSurveyResponseMessage         = createSelector([selectAuth], auth=> auth.surveyResponse);

@@ -16,7 +16,8 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import {
     selectIsLoadingForAddingSurveyResponse,
     selectIsAddingSurveyResponseError,
-    selectIsAddingSurveyResponseSuccess
+    selectIsAddingSurveyResponseSuccess,
+    selectSurveyResponseMessage
 } from '../../store/authReducers/auth.selector';
 
 const useStyles = makeStyles((theme)=>(
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme)=>(
     }
 ))
 
-const UserResponse = ({location,history, isLoading, isError, isSuccess, addSurveyResponse}) => {
+const UserResponse = ({location,history, isLoading, isError, isSuccess, addSurveyResponse, surveyResponse}) => {
 
     const classes = useStyles();
 
@@ -70,7 +71,7 @@ const UserResponse = ({location,history, isLoading, isError, isSuccess, addSurve
             <div className={classes.subHeader}> 
                     { isLoading && <>Please wait while we submit your response</>}
                     { isError   && <>Error while submmiting your response please try again</>}
-                    { isSuccess && <>Response Successfully submitted</>}
+                    { isSuccess && <>{surveyResponse}</>}
              </div>
              { !isLoading && isError && <RefreshIcon title ='try again'  className={classes.refreshIcon}
                                          onClick={()=>history.go(0)} 
@@ -88,7 +89,8 @@ const UserResponse = ({location,history, isLoading, isError, isSuccess, addSurve
 const mapStateToProps = state =>({
    isLoading :  selectIsLoadingForAddingSurveyResponse(state),
    isError   :  selectIsAddingSurveyResponseError(state),
-   isSuccess :  selectIsAddingSurveyResponseSuccess(state)
+   isSuccess :  selectIsAddingSurveyResponseSuccess(state),
+   surveyResponse :selectSurveyResponseMessage(state)
 });
 const mapDispatchToProps = dispatch =>({
         addSurveyResponse: (data)=> dispatch(startAddingSurveyResponseAsync(data))

@@ -11,6 +11,7 @@ const INITIAL_AUTH_STATE = {
     userSurveyData              : null,
     isFetchingUserSurveyData    : false,
     errorFetchinUserSurveyData  : false,
+    surveyResponse              : null, 
     isLoadingForAddingSurveyResponse    : false,
     isAddingSurveyResponseError         : false,
     isAddingSurveyResponseSuccess       : false
@@ -95,21 +96,24 @@ const authReducers = (state = INITIAL_AUTH_STATE, action) =>{
                 ...state,
                 isLoadingForAddingSurveyResponse: true,
                 isAddingSurveyResponseSuccess: false,
-                isAddingSurveyResponseError: false
+                isAddingSurveyResponseError: false,
+                surveyResponse: null
             }
         case authTypes.SUCCESS_CAPTURING_SURVEY_RESPONSE :
             return{
                 ...state,
                 isLoadingForAddingSurveyResponse: false,
                 isAddingSurveyResponseSuccess: true,
-                isAddingSurveyResponseError: false
+                isAddingSurveyResponseError: false,
+                surveyResponse: action.payload
             }
         case authTypes.ERROR_CAPTURING_SURVEY_RESPONSE :
             return{
                 ...state,
                 isAddingSurveyResponseSuccess: false,
                 isLoadingForAddingSurveyResponse: false,
-                isAddingSurveyResponseError: true
+                isAddingSurveyResponseError: true,
+                surveyResponse: null
             }
 
         case authTypes.START_FETCHING_USER_SURVEY_DATA :

@@ -87,8 +87,9 @@ export const resetSurveyStatus =() =>({
 export const startAddingSurveyResponse =() =>({
     type:  authTypes.START_CAPTURING_SURVEY_RESPONSE
 })
-export const successAddingSurveyResponse  =() =>({
-    type:  authTypes.SUCCESS_CAPTURING_SURVEY_RESPONSE
+export const successAddingSurveyResponse  =(data) =>({
+    type:  authTypes.SUCCESS_CAPTURING_SURVEY_RESPONSE,
+    payload: data
 })
 export const errorAddingSurveyResponse  =() =>({
     type:  authTypes.ERROR_CAPTURING_SURVEY_RESPONSE
@@ -186,8 +187,8 @@ export const startAddingSurveyResponseAsync =(data) => {
     return async dispatch =>{
         dispatch(startAddingSurveyResponse());
         try{
-            await axios.post('/api/sureyResponse', {surveyGeneratorId, reciverMailId,response});
-            dispatch(successAddingSurveyResponse());
+            let res = await axios.post('/api/sureyResponse', {surveyGeneratorId, reciverMailId,response});
+            dispatch(successAddingSurveyResponse(res.data.result));
         } catch(error){
             errorLogger(error, 'Error occored while adding survey response');
             dispatch(errorAddingSurveyResponse());

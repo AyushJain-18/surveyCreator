@@ -3,7 +3,6 @@ const User              = require('../model/user.model');
 let isUserExist = async(keyName, value) =>{
     try{
         let user =   await User.findOne({[keyName]: value});
-        console.log('User exist', user);
         return user;
     }catch(error){
         console.log('//Error// \n error while checking usrer existance');
@@ -13,7 +12,6 @@ let isUserExist = async(keyName, value) =>{
 let cretaeNewUser = async (userData)=>{
     try{
         let user = await User.create({...userData});
-        console.log('User created', user);
         return user;
     }catch(error){
         console.log('//Error// \n error while creating new user');
@@ -22,7 +20,6 @@ let cretaeNewUser = async (userData)=>{
 }
 let findUserByID = async(id) =>{
    let user =  await User.findById(id);
-   console.log('Find by ID User is', user);
    return user;
 }
 //{ profile_id: profile.id}
