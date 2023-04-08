@@ -4,11 +4,11 @@
   "description": "an express application to create surveys ",
   "main": "server.js",
   "scripts": {
-    // "start": "npm run server",
-    // "server": "node server.js",
-    "start": "concurrently \"npm run client\"  \"npm run server\"",
+    "start-server": "node server.js",
+    "start-client": "npm start --prefix client",
+    "build": "concurrently \"npm run client\"  \"npm run server\"",
     "server": "nodemon server.js",
-    "client": "npm start --prefix client",
+    "client": "npm install --prefix client && npm run build --prefix client",
     "heroku-postbuild": "NPF_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Ayush jain",
