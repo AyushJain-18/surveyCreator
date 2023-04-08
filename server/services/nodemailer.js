@@ -1,9 +1,13 @@
 const nodemailer = require('nodemailer');
+console.log('passord is', process.env.GMAIL);
 const transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
-           user: 'ishu11jain@gmail.com',
-           pass: 'Gshock@2028'
+           user: 'fse.ayushjain@gmail.com',
+           pass: process.env.GMAIL
        },
     tls: { rejectUnauthorized: false }
    });
@@ -52,10 +56,18 @@ const sendMail = (reciverObj, senderObj, {body, subject}) =>{
     const allPromisesGeneratorForSendingEmails =[];
     reciverObj.forEach(async (reciver,index) =>{
         const mailOptions =  generateMailOptions(reciver, senderObj,body,subject);
-        allPromisesGeneratorForSendingEmails.push(() => transporter.sendMail(mailOptions))  
+        try{
+            allPromisesGeneratorForSendingEmails.push(() => transporter.sendMail(mailOptions))  
+        } catch(error){
+            console.log('Error is', error);
+        }
+
     })
 
-   return Promise.all(allPromisesGeneratorForSendingEmails.map(eachPromiseGenerator => eachPromiseGenerator()))
+   return Promise.all(allPromisesGeneratorForSendingEmails.map(eachPromiseGenerator => {
+    console.log('eachPromiseGenerator',eachPromiseGenerator);
+    return eachPromiseGenerator()
+   }))
 }
 
 // sendMail(Survey_Recivers, {id: 123, mail: 'Ayush.ayushjain12@gmail.com'})
