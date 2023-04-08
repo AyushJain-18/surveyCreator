@@ -85,10 +85,12 @@ const useStyles = theme => ({
   },
 });
 class HeaderCompoennt extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={showDrowser: false};
-  }
+
+    this.state = { showDrowser: false}
+    this.toggleDrawer = this.toggleDrawer.bind(this);
+    };
   componentDidMount(){  this.props.startFetchingLoginDetails();}
   toggleDrawer(open){
     return (event) => {
