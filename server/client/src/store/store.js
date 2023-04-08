@@ -9,11 +9,11 @@ const middleware = [];
 middleware.push(thunk);
 
 //if(process.env.NODE_ENV ==="development"){
-    middleware.push(logger);
+middleware.push(logger);
 // }
 // reducers 
 const reducers = combineReducers({
-    auth: authReducers
+  auth: authReducers
 })
 const store = createStore(reducers, applyMiddleware(...middleware));
 

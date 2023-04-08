@@ -10,18 +10,17 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 
 const SurveyStepperContainer = ({history, isUserLogedIn})=>{
-    if(!isUserLogedIn){
-            history.push('/');
-    }
-    return <StepperComponent 
-                components={[<AddNewSurveysForm/>,<ShowUserData/>]}
-                 headerTitle={ ['Fill out survey creator form', 'Confirm form values']}
-            />
+  if(!isUserLogedIn){
+    history.push('/');
+  }
+  return <StepperComponent 
+    components={[<AddNewSurveysForm key='AddNewSurveysForm'/>,<ShowUserData key='ShowUserData'/>]}
+    headerTitle={ ['Fill out survey creator form', 'Confirm form values']}
+  />
 };
 const mapStateToPorops =state =>({
-    isUserLogedIn: selectIsUserLogedIn(state)
+  isUserLogedIn: selectIsUserLogedIn(state)
 })
 export default compose(
-    connect(mapStateToPorops),
-    withRouter)
-    (SurveyStepperContainer);
+  connect(mapStateToPorops),
+  withRouter)(SurveyStepperContainer);

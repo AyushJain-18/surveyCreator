@@ -25,13 +25,13 @@ import {Link} from 'react-router-dom';
 // custum componnsts 
 import UserPersona from '../user-persona/userPersona.component'
 // action creator
-import {startFetchingUserLoginDetailsAsync, startLoginWithGoogle} from '../../store/authReducers/auth.action';
+import {startFetchingUserLoginDetailsAsync} from '../../store/authReducers/auth.action';
 //  selectors
 import {
-    selectIsFetchingUserAuth, 
-    selectIsUserLogedIn,
-    selectIsUserAuthError,
-    selectLogedInUserData
+  selectIsFetchingUserAuth, 
+  selectIsUserLogedIn,
+  selectIsUserAuthError,
+  selectLogedInUserData
 } from '../../store/authReducers/auth.selector';
 
 
@@ -45,11 +45,11 @@ const DrawerList = ({classes, toggleDrawer}) => (
     onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
     <List>
       {['Profile', 'Surveys'].map((text, index) => (
-        <Link to={index === 0? '/Profile': index === 1? '/surveys': ''}>
-            <ListItem  button key={text}>
-              <ListItemIcon> {getIcons(index)}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+        <Link key={index} to={index === 0? '/Profile': index === 1? '/surveys': ''}>
+          <ListItem  button key={text}>
+            <ListItemIcon> {getIcons(index)}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
         </Link>
       ))}
     </List>
@@ -58,85 +58,90 @@ const DrawerList = ({classes, toggleDrawer}) => (
 
 // using react material UI with class based components
 const useStyles = theme => ({
-    root: {
-         flexGrow: 1,
-    },
-    appbar:{
-      minHeight: '72px'
-    },
-    menuButton: {
-            marginRight: theme.spacing(2),
+  root: {
+    flexGrow: 1,
+  },
+  appbar:{
+    minHeight: '72px'
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
             
+  },
+  title: {
+    flexGrow: 1,
+    cursor: 'pointer'
+  },
+  Error: {
+    color: 'red'
+  },
+  list: {
+    width: 250,
+  },
+  circularSpinner: {
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
     },
-    title: {
-            flexGrow: 1,
-            cursor: 'pointer'
-    },
-    Error: {
-        color: 'red'
-    },
-    list: {
-      width: 250,
-    },
-    circularSpinner: {
-        '& > * + *': {
-          marginLeft: theme.spacing(2),
-        },
-      },
+  },
 });
 class HeaderCompoennt extends React.Component {
-    state={showDrowser: false}
-    componentDidMount(){  this.props.startFetchingLoginDetails();}
-    toggleDrawer = (open) => (event) => {
+  constructor(props){
+    super(props);
+    this.state={showDrowser: false};
+  }
+  componentDidMount(){  this.props.startFetchingLoginDetails();}
+  toggleDrawer(open){
+    return (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
         return;
       }
   
       this.setState({showDrowser: open });
     };
-    //  list for drawer
-    render(){
-        const {classes, isLoading, isUserLoggedIn, isError, //this.useStyles(); 
-                userData} =  this.props; 
+  } 
+  //  list for drawer
+  render(){
+    const {classes, isLoading, isUserLoggedIn, isError, //this.useStyles(); 
+      userData} =  this.props; 
       
-        return (
-          <div className={classes.root}>
-            <AppBar className={classes.appbar} position="static">
-              <Toolbar>
-              {isUserLoggedIn &&
+    return (
+      <div className={classes.root}>
+        <AppBar className={classes.appbar} position="static">
+          <Toolbar>
+            {isUserLoggedIn &&
               <IconButton edge="start" className={classes.menuButton} color="inherit" 
-                            aria-label="menu" onClick={this.toggleDrawer(true)} >
-                    <MenuIcon />
-                </IconButton> }
-                <Typography variant="h6" className={classes.title}>
-                  <Link to='/'>Survey Generator</Link> 
-                </Typography>
-                { isLoading && <CircularProgress  className ={classes.circularSpinner} color="secondary"/>}
-                { !isLoading && isError && <Typography variant="h6"  color="secondary"> Error Ocuured</Typography>} 
-                { !isLoading && !isError && !isUserLoggedIn && <Button href='/auth/google' color="inherit">Login with google</Button>}
-                { !isLoading && !isError && isUserLoggedIn  && <UserPersona userData = {userData}/> }
-              </Toolbar>
-            </AppBar>
-           {isUserLoggedIn && <Drawer anchor='left' open={this.state.showDrowser} onClose={this.toggleDrawer(false)}>
-            <DrawerList  classes={classes} toggleDrawer={this.toggleDrawer}/>
-          </Drawer>}
-          </div>
-        );
-    }
+                aria-label="menu" onClick={this.toggleDrawer(true)} >
+                <MenuIcon />
+              </IconButton> }
+            <Typography variant="h6" className={classes.title}>
+              <Link to='/'>Survey Generator</Link> 
+            </Typography>
+            { isLoading && <CircularProgress  className ={classes.circularSpinner} color="secondary"/>}
+            { !isLoading && isError && <Typography variant="h6"  color="secondary"> Error Ocuured</Typography>} 
+            { !isLoading && !isError && !isUserLoggedIn && <Button href='/auth/google' color="inherit">Login with google</Button>}
+            { !isLoading && !isError && isUserLoggedIn  && <UserPersona userData = {userData}/> }
+          </Toolbar>
+        </AppBar>
+        {isUserLoggedIn && <Drawer anchor='left' open={this.state.showDrowser} onClose={this.toggleDrawer(false)}>
+          <DrawerList  classes={classes} toggleDrawer={this.toggleDrawer}/>
+        </Drawer>}
+      </div>
+    );
+  }
 }
 const mapStateToProps = state => ({
-    isLoading       : selectIsFetchingUserAuth(state),
-    isUserLoggedIn  : selectIsUserLogedIn(state),
-    isError         : selectIsUserAuthError(state),
-    userData        : selectLogedInUserData(state)
+  isLoading       : selectIsFetchingUserAuth(state),
+  isUserLoggedIn  : selectIsUserLogedIn(state),
+  isError         : selectIsUserAuthError(state),
+  userData        : selectLogedInUserData(state)
 })
 const mapDispatchToProps = dispatch => ({
-    startFetchingLoginDetails : () =>dispatch(startFetchingUserLoginDetailsAsync())
+  startFetchingLoginDetails : () =>dispatch(startFetchingUserLoginDetailsAsync())
 })
 
 export default  compose( 
-    withStyles(useStyles, { withTheme: true }),
-    connect(mapStateToProps , mapDispatchToProps)
+  withStyles(useStyles, { withTheme: true }),
+  connect(mapStateToProps , mapDispatchToProps)
 )(HeaderCompoennt);
 
 

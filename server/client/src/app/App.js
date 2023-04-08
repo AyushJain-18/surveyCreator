@@ -4,7 +4,6 @@ import './App.css';
 import {Route, Switch} from 'react-router-dom';
 import SurveyDashBoardCompoent from '../components/surveys/NewSurveyDashboard';
 import HomeDashboard from '../components/home-component/home.component';
-import FooterContact from '../components/footer/Footer.component';
 import UserResponse from '../components/user-response/UserResponse.component';
 import ErrorCompoennt  from '../components/custum-component/error/error.component';
 import UserProfile  from '../components/profile/user-profile.component'
