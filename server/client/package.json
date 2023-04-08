@@ -25,22 +25,14 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "sass": "^1.32.2",
+    "surveycreator": "file:..",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint \"src/**/*.{js,jsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx}\" --fix"
-  },
-  "devDependencies": {
-    "eslint": "^8.37.0",
-    "eslint-plugin-airbnb-base": "^0.0.1-security",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
