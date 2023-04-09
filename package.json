@@ -11,10 +11,6 @@
   },
   "author": "Ayush jain",
   "license": "ISC",
-  "engines": {
-    "node": "v10.16.3",
-    "npm": "6.9.0"
-  },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "concurrent": "^0.3.2",
