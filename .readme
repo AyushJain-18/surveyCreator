@@ -1,0 +1,4 @@
+1. Build client folder.
+2. add client folder to DB
+3. serve this client folder with node. with build command
+4. add environmanet variable, some of these are different and can be found in google console
