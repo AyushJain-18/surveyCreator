@@ -61,10 +61,9 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// export the app and serverless handler
-module.exports = app;
-module.exports.handler = serverless(app);
-
-// const PORT  = process.env.PORT || 5000 ;
-// console.log('-----------process.env.NODE_ENV---------------------',process.env.NODE_ENV)
-// app.listen(PORT, ()=> console.log('server is created on port', PORT))
+const PORT = process.env.PORT || 5000;
+console.log(
+  '-----------process.env.NODE_ENV---------------------',
+  process.env.NODE_ENV
+);
+app.listen(PORT, () => console.log('server is created on port', PORT));
